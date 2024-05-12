@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Transcipt Wise{% endblock title %}</title>
+
+    <link href="{% static 'src/styles.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="flex flex-col h-screen justify-between">
+      <header class="bg-indigo-500 text-white py-4">
+        <div class="container mx-auto px-4">
+          <h1 class="text-xl font-bold">Transcript Wise</h1>
+        </div>
+      </header>
+
+      <main class="container h-screen mx-auto w-full flex px-4 py-8">
+        {% block content %} {% endblock content %}
+      </main>
+
+      <footer class="bg-gray-200 text-gray-600 py-4">
+        <div class="container mx-auto px-4 text-center">
+          &copy; 2024 Transcript Wise. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en"></html>
