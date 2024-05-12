@@ -2,7 +2,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
-from django.contrib.auth import get_user_model
+from .models import StudentProfile
 
 User = get_user_model()  # Get the User model (built-in or custom)
 
@@ -21,7 +21,7 @@ class CustomUserChangeForm(UserChangeForm):
             "email",
             "username",
             )
-        
+
 
 
 class RegistrationForm(forms.Form):
@@ -49,3 +49,10 @@ class RegistrationForm(forms.Form):
         if commit:
             user.save()
         return user
+
+
+
+class StudentProfileForm(forms.ModelForm):
+  class Meta:
+    model = StudentProfile
+    fields = ('verification_document', 'profile_image', 'first_name', 'last_name','other_names')

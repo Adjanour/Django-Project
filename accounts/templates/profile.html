@@ -1,0 +1,277 @@
+{% extends "base_layout.html" %} 
+{% block title %}Profile{% endblock title %} 
+{% block content %}
+<div class="mx-auto w-fit">
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        <strong>Error!</strong> Please correct the following errors:
+        <ul>
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{field}}</li>
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <div class="max-w-3xl mx-auto mt-8">
+        <nav aria-label="Progress">
+          <ol role="list" class="flex items-center">
+            {% for step in steps %}  
+            <li class="relative pr-8 sm:pr-20  progress-item">
+                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                  <div class="h-0.5 w-full mb-2 bg-gray-200"></div>
+                </div>
+                {% if step.completed %}
+                  <a href="#" class="relative w-8 h-8 flex items-center justify-center bg-accent rounded-full hover:bg-accent-dark transition duration-150 ease-in-out progress-circle completed">
+                {% elif step.current %}
+                  <a href="#" class="relative w-8 h-8 flex items-center justify-center bg-accent rounded-full hover:bg-accent-dark transition duration-150 ease-in-out progress-circle current">
+                {% else %}
+                  <a href="#" class="relative  w-8 h-8 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group hover:border-accent transition duration-150 ease-in-out progress-circle">
+                {% endif %}
+                <span class="text-white "> {{ step.number }} </span>  </a>
+                <span class="ml-4 mb-6 text-sm font-medium text-gray-500"> {{ step.name }} </span>  
+            </li>
+            {% endfor %}
+          </ol>
+        </nav>
+    </div>
+    {% for step in steps %}  
+      
+    {% if step.number == 1 and step.current %}
+      <form method="post" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+        <div class="grid grid-cols-1 gap-4">
+            <div class="flex flex-col">
+            <label for="first_name" class="text-gray-700 font-medium mb-2">First Name</label>
+            <input type="text" id="first_name" name="first_name" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            {% for error in form.first_name.errors %}
+                <p class="text-red-500 text-sm">{{ error }}</p>
+            {% endfor %}
+            </div>
+            <div class="flex flex-col">
+            <label for="last_name" class="text-gray-700 font-medium mb-2">Last Name</label>
+            <input type="text" id="last_name" name="last_name" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            {% for error in form.last_name.errors %}
+                <p class="text-red-500 text-sm">{{ error }}</p>
+            {% endfor %}
+            </div>
+            <div class="flex flex-col">
+            <label for="other_names" class="text-gray-700 font-medium mb-2">Other Names (Optional)</label>
+            <input type="text" id="other_names" name="other_names" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            {% for error in form.other_names.errors %}
+                <p class="text-red-500 text-sm">{{ error }}</p>
+            {% endfor %}
+            </div>
+            <div class="flex flex-col">
+              <label for="profile_image" class="text-gray-700 font-medium mb-1">Profile Image</label>
+              <div id="profile-image-dropzone" class="relative w-full mt-8 border-2 rounded-md  border-gray-300 border-dashed px-6 py-6  flex flex-row items-center justify-start  hover:bg-gray-100 cursor-pointer">
+                <div class="mx-2 p-4">
+                  <img class="inline-block h-48 w-48 rounded-md object-cover object-center" id="preview" src="https://placehold.co/80x80" alt="A placeholder image for the user's profile picture, which shows a silhouette of a person's head and shoulders">
+                </div>
+                <div class="text-center mt-4">
+                  <p class="mt-1 text-sm text-gray-600">
+                    <span class="font-medium text-accent hover:text-accent-dark transition duration-150 ease-in-out cursor-pointer">
+                      Upload a profile picture
+                    </span>
+                    <span>or drag and drop</span>
+                  </p>
+                  <button type="button" class="inline-flex items-center px-4 py-2 bg-accent text-sm text-gray-500 font-medium rounded-md hover:bg-accent-dark transition duration-150 ease-in-out">
+                    Browse
+                  </button>
+                </div>
+              </div>
+              <input type="file" id="profile_image" name="profile_image" class="hidden" accept=".jpg,.jpeg,.png">
+              {% for error in form.profile_image.errors %}
+                <p class="text-red-500 text-sm mt-2">{{ error }}</p>
+              {% endfor %}
+            </div>
+            
+          
+            <input type="file" id="verification_document" name="verification_document" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            {% for error in form.verification_document.errors %}
+                <p class="text-red-500 text-sm">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">
+            Next
+        </button>
+      </form>
+    {% endif %}
+
+    {% if step.number == 2 and step.current %}
+      <form method="post" class="space-y-4">
+      {% csrf_token %}
+      <div class="grid grid-cols-1 gap-4">
+          <div class="flex flex-col">
+          <label for="id_number" class="text-gray-700 font-medium mb-2">ID Number</label>
+          <input type="text" id="id_number" name="id_number" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+          {% for error in form.id_number.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+          </div>
+          <div class="flex flex-col">
+          <label for="phone_number" class="text-gray-700 font-medium mb-2">Phone Number</label>
+          <input type="text" id="phone_number" name="phone_number" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+          {% for error in form.phone_number.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+          </div>
+          <div class="flex flex-col">
+          <label for="date_of_birth" class="text-gray-700 font-medium mb-2">Date of Birth</label>
+          <input type="date" id="date_of_birth" name="date_of_birth" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+          {% for error in form.date_of_birth.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+          </div>
+      </div>
+      <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">
+          Next
+      </button>
+      </form>
+    {% endif %}
+    {% if step.number == 3 and step.current %}
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 gap-4">
+            <div class="flex flex-col">
+            <label for="address" class="text-gray-700 font-medium mb-2">Address</label>
+            <input type="text" id="address" name="address" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            {% for error in form.address.errors %}
+                <p class="text-red-500 text-sm">{{ error }}</p>
+            {% endfor %}
+            </div>
+            <div class="flex flex-col">
+            <label for="city" class="text-gray-700 font-medium mb-2">City</label>
+            <input type="text" id="city" name="city" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            {% for error in form.city.errors %}
+                <p class="text-red-500 text-sm">{{ error }}</p>
+            {% endfor %}
+            </div>
+            <div class="flex flex-col">
+            <label for="country" class="text-gray-700 font-medium mb-2">Country</label>
+            <input type="text" id="country" name="country" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            {% for error in form.country.errors %}
+                <p class="text-red-500 text-sm">{{ error }}</p>
+            {% endfor %}
+            </div>
+        </div>  
+        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">
+            Next
+        </button>
+      </form>
+    {% endif %}
+    {% if step.number == 4 and step.current %}
+      <form method="post" class="space-y-4">
+      {% csrf_token %}
+      <div class="grid grid-cols-1 gap-4">
+          <div class="flex flex-col">
+          <label for="education_level" class="text-gray-700 font-medium mb-2">Education Level</label>
+          <input type="text" id="education_level" name="education_level" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+          {% for error in form.education_level.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+          </div>
+          <div class="flex flex-col">
+          <label for="institution" class="text-gray-700 font-medium mb-2">Institution</label>
+          <input type="text" id="institution" name="institution" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+          {% for error in form.institution.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+          </div>
+          <div class="flex flex-col">
+          <label for="course" class="text-gray-700 font-medium mb-2">Course</label>
+          <input type="text" id="course" name="course" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+          {% for error in form.course.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+          </div>
+
+          <div class="flex flex-col">
+          <label for="graduation_year" class="text-gray-700 font-medium mb-2">Graduation Year</label>
+          <input type="text" id="graduation_year" name="graduation_year" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+          {% for error in form.graduation_year.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+
+          </div>  
+
+          <div class="flex flex-col">
+          <label for="graduation_certificate" class="text-gray-700 font-medium mb-2">Graduation Certificate</label>
+          <input type="file" id="graduation_certificate" name="graduation_certificate" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+          {% for error in form.graduation_certificate.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+            </div>
+      </div>
+      <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">
+          Next
+      </button>
+      </form>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<script>
+const profileImageDropzone = document.getElementById('profile-image-dropzone');
+const profileImageInput = document.getElementById('profile_image');
+const previewImage = document.getElementById('preview');
+
+profileImageDropzone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  profileImageDropzone.classList.add('bg-gray-200');
+});
+
+profileImageDropzone.addEventListener('dragleave', (e) => {
+  e.preventDefault();
+  profileImageDropzone.classList.remove('bg-gray-200');
+});
+
+profileImageDropzone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  const droppedFiles = e.dataTransfer.files;
+
+  // Basic validation (replace with your preferred logic)
+  if (droppedFiles.length === 0) {
+    alert('Please select an image file');
+    return;
+  }
+
+  const acceptedExtensions = ['jpg', 'jpeg', 'png'];
+  const fileExtension = droppedFiles[0].name.split('.').pop().toLowerCase();
+
+  if (!acceptedExtensions.includes(fileExtension)) {
+    alert('Only JPG, JPEG, and PNG files are allowed');
+    return;
+  }
+
+  // Assuming you have logic to handle the uploaded file (e.g., sending to server)
+  // ... your upload logic here ...
+
+  // Update preview image (replace with your preferred method)
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    previewImage.src = e.target.result;
+  };
+  reader.readAsDataURL(droppedFiles[0]);
+
+  // Set the selected file in the hidden input (optional)
+  profileImageInput.files = droppedFiles;
+});
+
+// Handle click on "
+profileImageDropzone.addEventListener('click', () => {
+  profileImageInput.click();
+});
+
+profileImageInput.addEventListener("change", function() {
+  const file = profileImageInput.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    previewImage.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+{% endblock content %}

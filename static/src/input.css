@@ -5,3 +5,17 @@
 body{
     font-family: sans-serif;
 }
+
+.progress-item {
+    /* Default styles for each progress item (optional) */
+    display: flex;
+  }
+  
+.progress-circle.completed {
+    background-color: #4CAF50; /* Green for completed steps */
+  }
+  
+.progress-circle.current {
+    background-color: #ffc107; /* Yellow for current step */
+  }
+  
