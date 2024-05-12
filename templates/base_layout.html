@@ -63,12 +63,12 @@
                   ></path>
                 </svg>
               </button>
-              <div class="ml-3 relative">
+              <div class="ml-3 relative  w-fit">
                 <div>
                   <button
                     aria-haspopup="true"
                     aria-label="User menu"
-                    class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out"
+                    class="flex group text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out"
                     id="user-menu"
                   >
                     <img
@@ -76,39 +76,37 @@
                       class="h-8 w-8 rounded-full"
                       src="https://placehold.co/32x32"
                     />
+                    <div
+                      class="origin-top-right absolute hidden group-hover:block right-0 mt-2 w-48 rounded-md shadow-lg"
+                    >
+                      <div
+                        aria-labelledby="user-menu"
+                        aria-orientation="vertical"
+                        class="py-1 rounded-md bg-white shadow-xs"
+                        role="menu"
+                      >
+                        <a
+                          class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                          href="{% url 'profile' %}"
+                          role="menuitem"
+                          >Your Profile</a
+                        >
+                        <a
+                          class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                          href="#"
+                          role="menuitem"
+                          >Settings</a
+                        >
+                        <a
+                          class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                          href="{% url 'account_logout' %}"
+                          role="menuitem"
+                          target="_blank"
+                          >Sign out</a
+                        >
+                      </div>
+                    </div>
                   </button>
-                </div>
-                <div
-                  class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg"
-                >
-                  <div
-                    aria-labelledby="user-menu"
-                    aria-orientation="vertical"
-                    class="py-1 rounded-md bg-white shadow-xs"
-                    role="menu"
-                  >
-                    <a
-                      class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
-                      href="#"
-                      role="menuitem"
-                      target="_blank"
-                      >Your Profile</a
-                    >
-                    <a
-                      class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
-                      href="#"
-                      role="menuitem"
-                      target="_blank"
-                      >Settings</a
-                    >
-                    <a
-                      class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
-                      href="#"
-                      role="menuitem"
-                      target="_blank"
-                      >Sign out</a
-                    >
-                  </div>
                 </div>
               </div>
             </div>
@@ -138,7 +136,6 @@
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <!-- Page content goes here -->
           {% block content %} 
-          
           {% endblock %}
         </div>
       </main>
