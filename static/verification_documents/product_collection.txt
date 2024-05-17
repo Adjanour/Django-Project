@@ -1,0 +1,22 @@
+product collection
+
+{
+  "_id": ObjectId("63fc8901f208c1f626860a49")
+  "name": "Mountain Bike",
+  "type": "Motor vehicle"
+  "skus": ""
+  "description": "Rugged bike for off-road adventures.",
+  "categories": ["Bikes", "Outdoor"],
+  "sub-categories":
+  "variants": [
+    { "size": "M", "color": "Blue", "sku": "MB-M-BLUE", "price": 750, "quantity": 15 },  
+    { "size": "L", "color": "Red", "sku": "MB-L-RED", "price": 800, "quantity": 8 }
+  ],
+  "images": ["mountain-bike-1.jpg", "mountain-bike-2.jpg"],
+  "supplier": { 
+    "id": ObjectId("63fc87a6d56498620f0946e3"), 
+    "name": "Acme Bikes Co." 
+  }
+}
+
+store products in and array of ordered items using nesting

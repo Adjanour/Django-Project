@@ -1,0 +1,113 @@
+-Registeration
+- Membership management
+	- Membership upgrade
+	- Renewal
+	- 
+- Billing 
+	- history of transactions
+	- Invoices
+	- set billing dates
+
+
+- Profile page
+- 
+
+Applicant
+----------
+Name in parts
+DoB
+religious denominations
+contact address
+Email
+name of employer
+adress of employer
+present position
+
+Documents
+----------
+> Separate table
+- Certificates
+- Passport picture
+- CV
+- 
+
+1. Create and account with fullname, email and password
+2. Application in stages
+   - Applicant stage 
+	- Bio Data
+	- Education
+	  - General
+	  - Technical
+	  - Training
+	- Employement
+   	- Guarantors 
+         - Proposer
+	 - 1st and 2nd Supporter
+	- Certify
+
+Accounts Table
+- First Name
+- Last Name
+- Other Name
+- Password
+- Email
+- Application Type
+
+Bio Data
+- DoB
+- Contact
+- Adress
+- Religious Denomination
+- Telephone
+- Position / Rank
+- Name of employer  
+- Address of employer
+
+
+Membership
+
+
+Guarantors
+- Type
+- Application/Account
+- Email
+- Name
+- Address
+- Membership Class
+- Name of institution 
+- Address of institution
+- Status 
+
+
+git workflow
+-------------
+separate branches
+
+
+<button class="delete" onclick="deleteMembership(<?php echo $member_id; ?>)">Delete</button>
+
+--view documents
+
+
+member applicant similar structure
+view pdf or image of document
+
+three stauses for application
+before proposal after proposal
+admin should be able to approve and change application status
+
+
+join account and biodata to create application table
+create a table to store applicant details it should take the date the application was created and the time
+
+
+
+fetch all details and show applicants application
+fetch documents, profile image
+
+filname, filetype, filesize
+
+
+
+thoughts are not fear
+feelings are not facts

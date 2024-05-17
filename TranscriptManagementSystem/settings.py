@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -26,8 +25,7 @@ SECRET_KEY = 'django-insecure--uzij280mhn2pjkkrko+6m)okmxvzvn031grh*5$4@6b_x1bf*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["192.168.43.6", "localhost", "10.1.25.108"]
 
 # Application definition
 
@@ -39,15 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django.contrib.sites",
-    #Config
-    #Third-Party
+    # Config
+    # Third-Party
     "allauth_ui",
-    "allauth", # new
+    "allauth",  # new
     "widget_tweaks",
-    "allauth.account", # new
+    "allauth.account",  # new
     # Local
     "accounts.apps.AccountsConfig",
     "transcripts.apps.TranscriptsConfig",
+    "mypayments.apps.MypaymentsConfig",
 ]
 
 MIDDLEWARE = [
@@ -81,7 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TranscriptManagementSystem.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -93,20 +91,39 @@ WSGI_APPLICATION = 'TranscriptManagementSystem.wsgi.application'
 # }
 
 # Database setup for SQL Server
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "mssql",
+#         "NAME": "dbTranscriptManagementSystem",
+#         # "USER": "salem",
+#         "USER":"",
+#         # "PASSWORD": "TonePave66$",
+#         "PASSWORD":"",
+#         # "HOST": "africoda-server-2.database.windows.net",
+#         "HOST":"KIRKPC\SALEMSERVER",
+#         "PORT": "",
+#         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server"},
+#     },
+# }
+
+# configure to use sqlite3
 DATABASES = {
-    "default": {
-        "ENGINE": "mssql",
-        "NAME": "dbTranscriptManagementSystem",
-        # "USER": "salem",
-        "USER":"",
-        # "PASSWORD": "TonePave66$",
-        "PASSWORD":"",
-        # "HOST": "africoda-server-2.database.windows.net",
-        "HOST":"KIRKPC\SALEMSERVER",
-        "PORT": "",
-        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server"},
-    },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+# configure to use mysql
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'dbTranscriptManagementSystem',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -126,7 +143,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -138,24 +154,21 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 MEDIA_URL = '/uploads/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-
 
 # COMPRESS_ROOT = BASE_DIR / 'static'
 
 # COMPRESS_ENABLED = True
 
 # STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
-
 
 
 # Default primary key field type
@@ -166,13 +179,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 # django-allauth config
-LOGIN_REDIRECT_URL = "/"
-ACCOUNT_LOGOUT_REDIRECT = "/" 
+LOGIN_REDIRECT_URL = "/accounts/profile"
+ACCOUNT_LOGOUT_REDIRECT = "/"
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
- "django.contrib.auth.backends.ModelBackend",
- "allauth.account.auth_backends.AuthenticationBackend",
- )
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -181,13 +194,17 @@ EMAIL_HOST_PASSWORD = 'xzvd qwcj cfrq btbx'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-
 ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_USERNAME_REQUIRED = False # new
-ACCOUNT_AUTHENTICATION_METHOD = "email" # new
-ACCOUNT_EMAIL_REQUIRED = True # new
-ACCOUNT_UNIQUE_EMAIL = True # new
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1
+ACCOUNT_USERNAME_REQUIRED = False  # new
+ACCOUNT_AUTHENTICATION_METHOD = "email"  # new
+ACCOUNT_EMAIL_REQUIRED = True  # new
+ACCOUNT_UNIQUE_EMAIL = True  # new
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 DEFAULT_FROM_EMAIL = "admin@transcriptwise.com"
+
+
+HUBTEL_API_KEY = 'kcaliqtv'
+HUBTEL_API_SECRET = 'kzaxioop'
+

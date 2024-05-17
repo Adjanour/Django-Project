@@ -2,17 +2,19 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
-from .models import StudentProfile
+from .models import StudentProfile, CourseLog
 
 User = get_user_model()  # Get the User model (built-in or custom)
+
 
 class CustomeUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields  = (
+        fields = (
             "email",
             "username",
         )
+
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
@@ -20,14 +22,13 @@ class CustomUserChangeForm(UserChangeForm):
         fields = (
             "email",
             "username",
-            )
-
+        )
 
 
 class RegistrationForm(forms.Form):
-
     class Meta:
         fields = ['username']
+
     username = forms.CharField(label="Username", max_length=30)
     email = forms.EmailField(label="Email")
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
@@ -51,8 +52,31 @@ class RegistrationForm(forms.Form):
         return user
 
 
-
 class StudentProfileForm(forms.ModelForm):
-  class Meta:
-    model = StudentProfile
-    fields = ('verification_document', 'profile_image', 'first_name', 'last_name','other_names')
+    class Meta:
+        model = StudentProfile
+        fields = ('profile_image', 'first_name', 'last_name', 'other_names', 'email', 'gender', 'residential_address',
+                  'postal_address', 'date_of_birth', 'phone_number')
+
+
+class StudentProfileFormID(forms.ModelForm):
+    class Meta:
+        model = StudentProfile
+        fields = ('identification_type', 'identification_number', 'identification_file')
+
+
+class StudentProfileFormProgramme(forms.ModelForm):
+    class Meta:
+        model = CourseLog
+        fields = ('index_number', 'full_name', 'graduate_type', 'programme', 'admission_year', 'graduation_year')
+
+
+class CourseLogForm(forms.ModelForm):
+    class Meta:
+        model = CourseLog
+        fields = ['index_number', 'full_name', 'graduate_type', 'programme',
+                  'admission_year', 'graduation_year']
+        widgets = {
+            'admission_year': forms.NumberInput(attrs={'min': 2000, 'max': 2050}),
+            'graduation_year': forms.NumberInput(attrs={'min': 2000, 'max': 2050, 'required': False}),
+        }

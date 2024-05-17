@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #User Mangement
     path("accounts/", include("allauth.urls")),
+    #Payment
+    path("",include("mypayments.urls")),
     # Local
     path("",include("transcripts.urls")),
     path("",include("accounts.urls")),

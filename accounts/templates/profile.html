@@ -1,7 +1,7 @@
 {% extends "base_layout.html" %} 
 {% block title %}Profile{% endblock title %} 
 {% block content %}
-<div class="mx-auto w-fit">
+<div class="mx-auto w-full">
     {% if form.errors %}
     <div class="alert alert-danger">
         <strong>Error!</strong> Please correct the following errors:
@@ -15,51 +15,56 @@
         </ul>
     </div>
     {% endif %}
-    <div class="max-w-3xl mx-auto mt-8">
-        <nav aria-label="Progress">
-          <ol role="list" class="flex items-center">
+    <div class="w-full mx-auto mt-8 flex">
+        <nav aria-label="Progress" style="font-size:1.5rem" class="mx-auto text-lg w-full">          
+          <ol role="list" class="flex mx-auto w-full">
             {% for step in steps %}  
-            <li class="relative pr-8 sm:pr-20  progress-item">
-                <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                  <div class="h-0.5 w-full mb-2 bg-gray-200"></div>
-                </div>
-                {% if step.completed %}
-                  <a href="#" class="relative w-8 h-8 flex items-center justify-center bg-accent rounded-full hover:bg-accent-dark transition duration-150 ease-in-out progress-circle completed">
-                {% elif step.current %}
-                  <a href="#" class="relative w-8 h-8 flex items-center justify-center bg-accent rounded-full hover:bg-accent-dark transition duration-150 ease-in-out progress-circle current">
-                {% else %}
-                  <a href="#" class="relative  w-8 h-8 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group hover:border-accent transition duration-150 ease-in-out progress-circle">
-                {% endif %}
+            <li class="relative pr-8 sm:pr-16 md:pr-16 progress-item w-full mx-auto">
+              <span style="z-index: 1;align-items:center;" class="flex flex-col align-center justify-center mt-4">
+{#                {% if step.completed %}#}
+              <a href="{% if not step.completed %}javascript:void(0){% else %}/accounts/profile/{{ step.number }}{% endif %}" aria-disabled="{% if not step.completed %}True{% endif %}" class="  relative  w-16 h-16 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group hover:border-accent  bg-accent  hover:bg-accent-dark transition duration-150 ease-in-out progress-circle {% if step.completed %}completed{% elif step.current %}current{% endif %}">
+{#                {% elif step.current %}#}
+{#                  <a href="/accounts/profile/{{ step.number }}" class=" relative w-16 h-16 flex items-center justify-center bg-accent rounded-full hover:bg-accent-dark transition duration-150 ease-in-out progress-circle current">#}
+{#                {% else %}#}
+{#                  <a href="/accounts/profile/{{ step.number }}" class=" relative  w-16 h-16 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group hover:border-accent transition duration-150 ease-in-out progress-circle">#}
+{#                {% endif %}#}
+
                 <span class="text-white "> {{ step.number }} </span>  </a>
-                <span class="ml-4 mb-6 text-sm font-medium text-gray-500"> {{ step.name }} </span>  
+
+                <span class="mb-6 text-sm font-medium text-gray-500"> {{ step.name }} </span>  
+              </span>
+
+              <span style="left:80px" class="absolute inset-0 w-full flex items-center line" aria-hidden="true">
+                  <div  class="h-0.5 w-full mb-6 bg-gray-200"></div>
+              </span>
+
             </li>
             {% endfor %}
           </ol>
         </nav>
     </div>
-    {% for step in steps %}  
-      
-    {% if step.number == 1 and step.current %}
+
+    {% if step == 1  %}
       <form method="post" enctype="multipart/form-data" class="space-y-4">
       {% csrf_token %}
         <div class="grid grid-cols-1 gap-4">
             <div class="flex flex-col">
             <label for="first_name" class="text-gray-700 font-medium mb-2">First Name</label>
-            <input type="text" id="first_name" name="first_name" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <input type="text" id="first_name" name="first_name" value="{{form.first_name.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
             {% for error in form.first_name.errors %}
                 <p class="text-red-500 text-sm">{{ error }}</p>
             {% endfor %}
             </div>
             <div class="flex flex-col">
             <label for="last_name" class="text-gray-700 font-medium mb-2">Last Name</label>
-            <input type="text" id="last_name" name="last_name" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <input type="text" id="last_name" name="last_name" value="{{form.last_name.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
             {% for error in form.last_name.errors %}
                 <p class="text-red-500 text-sm">{{ error }}</p>
             {% endfor %}
             </div>
             <div class="flex flex-col">
             <label for="other_names" class="text-gray-700 font-medium mb-2">Other Names (Optional)</label>
-            <input type="text" id="other_names" name="other_names" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <input type="text" id="other_names" name="other_names" value="{{form.other_names.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
             {% for error in form.other_names.errors %}
                 <p class="text-red-500 text-sm">{{ error }}</p>
             {% endfor %}
@@ -68,7 +73,11 @@
               <label for="profile_image" class="text-gray-700 font-medium mb-1">Profile Image</label>
               <div id="profile-image-dropzone" class="relative w-full mt-8 border-2 rounded-md  border-gray-300 border-dashed px-6 py-6  flex flex-row items-center justify-start  hover:bg-gray-100 cursor-pointer">
                 <div class="mx-2 p-4">
+                  {% if user.profile.profile_image %}
+                    <img src="{{ user.profile.profile_image.url }}" class="inline-block h-48 w-48 rounded-md object-cover object-center" id="preview" src="https://placehold.co/80x80" alt="A placeholder image for the user's profile picture, which shows a silhouette of a person's head and shoulders">
+                  {% else %}
                   <img class="inline-block h-48 w-48 rounded-md object-cover object-center" id="preview" src="https://placehold.co/80x80" alt="A placeholder image for the user's profile picture, which shows a silhouette of a person's head and shoulders">
+                  {% endif %}
                 </div>
                 <div class="text-center mt-4">
                   <p class="mt-1 text-sm text-gray-600">
@@ -82,7 +91,7 @@
                   </button>
                 </div>
               </div>
-              <input type="file" id="profile_image" name="profile_image" class="hidden" accept=".jpg,.jpeg,.png">
+              <input type="file"  id="profile_image" name="profile_image" class="hidden" accept=".jpg,.jpeg,.png">
               {% for error in form.profile_image.errors %}
                 <p class="text-red-500 text-sm mt-2">{{ error }}</p>
               {% endfor %}
@@ -100,38 +109,78 @@
       </form>
     {% endif %}
 
-    {% if step.number == 2 and step.current %}
+    {% if step == 2  %}
       <form method="post" class="space-y-4">
-      {% csrf_token %}
-      <div class="grid grid-cols-1 gap-4">
-          <div class="flex flex-col">
-          <label for="id_number" class="text-gray-700 font-medium mb-2">ID Number</label>
-          <input type="text" id="id_number" name="id_number" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
-          {% for error in form.id_number.errors %}
-              <p class="text-red-500 text-sm">{{ error }}</p>
-          {% endfor %}
+          {% csrf_token %}
+          <div class="grid grid-cols-1 gap-4">
+              <div class="flex flex-col">
+                  <label for="identification_number" class="text-gray-700 font-medium mb-2">ID Number</label>
+                  <input type="text" id="identification_number" name="identification_number" value="{{form.identification_number.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+                  {% for error in form.identification_number.errors %}
+                      <p class="text-red-500 text-sm">{{ error }}</p>
+                  {% endfor %}
+              </div>
+              <div class="flex flex-col">
+                  <label for="identification_type" class="text-gray-700 font-medium mb-2">ID Type</label>
+                  <select id="identification_type" name="identification_type" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+                  <option value="">Select Identification Type</option>
+                      {% for id_type in id_types %}
+                          {% if form.identification_type.value == id_type.id %}
+                          <option value="{{ id_type.id }}" selected>{{ id_type.name }}</option>
+                          {% endif %}
+                          <option value="{{ id_type.id }}">{{ id_type.name }}</option>
+                      {% endfor %}
+                  </select>
+                  {% for error in form.identification_type.errors %}
+                      <p class="text-red-500 text-sm">{{ error }}</p>
+                  {% endfor %}
+              </div>
+              <div class="flex flex-col">
+              <label for="identification_file" class="text-gray-700 font-medium mb-2">ID File</label>
+{#              <input type="file" id="identification_file" value="{{ form.identification_file.file }}" name="identification_file" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">#}
+                {% for error in form.identification_file.errors %}
+                    <p class="text-red-500 text-sm">{{ error }}</p>
+                {% endfor %}
+              </div>
+              <div class="relative flex items-center justify-center">
+                <div class="w-full max-w-lg">
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <input type="file" id="identification-file" name="identification_file" class="w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500 hidden">
+                            <button type="button" id="upload-button" class="absolute inset-y-0 right-0 flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-medium rounded-r-md">
+                                Upload
+                            </button>
+                        </div>
+                        <div id="file-preview" class="file-preview flex items-center justify-between mb-2 hidden">
+                            <div class="flex items-center">
+                                <div class="bg-accent text-white rounded-full p-2 mr-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0zM8 11v4m4-4v4m4-4v4"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800" id="file-name"></p>
+                                    <p class="text-xs text-gray-500">
+                                        <span id="file-size"></span>
+                                        <span id="file-type"></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <button type="button" id="close-button" class="text-gray-500 hover:text-red-500 focus:outline-none">
+                                &times;
+                            </button>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 hidden">
+                            <div class="bg-accent h-2 rounded-full" style="width: 75%">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
           </div>
-          <div class="flex flex-col">
-          <label for="phone_number" class="text-gray-700 font-medium mb-2">Phone Number</label>
-          <input type="text" id="phone_number" name="phone_number" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
-          {% for error in form.phone_number.errors %}
-              <p class="text-red-500 text-sm">{{ error }}</p>
-          {% endfor %}
-          </div>
-          <div class="flex flex-col">
-          <label for="date_of_birth" class="text-gray-700 font-medium mb-2">Date of Birth</label>
-          <input type="date" id="date_of_birth" name="date_of_birth" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
-          {% for error in form.date_of_birth.errors %}
-              <p class="text-red-500 text-sm">{{ error }}</p>
-          {% endfor %}
-          </div>
-      </div>
-      <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">
-          Next
-      </button>
+          <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">Next</button>
       </form>
     {% endif %}
-    {% if step.number == 3 and step.current %}
+    {% if step == 3 %}
       <form method="post" class="space-y-4">
         {% csrf_token %}
         <div class="grid grid-cols-1 gap-4">
@@ -162,7 +211,7 @@
         </button>
       </form>
     {% endif %}
-    {% if step.number == 4 and step.current %}
+    {% if step == 4 %}
       <form method="post" class="space-y-4">
       {% csrf_token %}
       <div class="grid grid-cols-1 gap-4">
@@ -210,7 +259,6 @@
       </button>
       </form>
     {% endif %}
-  {% endfor %}
 </div>
 
 <script>
@@ -218,7 +266,8 @@ const profileImageDropzone = document.getElementById('profile-image-dropzone');
 const profileImageInput = document.getElementById('profile_image');
 const previewImage = document.getElementById('preview');
 
-profileImageDropzone.addEventListener('dragover', (e) => {
+try {
+    profileImageDropzone.addEventListener('dragover', (e) => {
   e.preventDefault();
   profileImageDropzone.classList.add('bg-gray-200');
 });
@@ -273,5 +322,49 @@ profileImageInput.addEventListener("change", function() {
   };
   reader.readAsDataURL(file);
 });
+}catch (error) {
+    console.log(error);
+}
+
+// File upload preview
+
+const fileUploadInput = document.getElementById('identification-file');
+const uploadButton = document.getElementById('upload-button');
+const filePreview = document.getElementById('file-preview');
+const closeButton = document.getElementById('close-button');
+
+try {
+
+    uploadButton.addEventListener('click', () => {
+  fileUploadInput.click();
+});
+
+fileUploadInput.addEventListener('change', (event) => {
+  const selectedFile = event.target.files[0];
+  if (selectedFile) {
+    const fileNameSpan = document.getElementById('file-name');
+    fileNameSpan.textContent = selectedFile.name;
+
+    // Update other file information (size, type) as needed
+    const fileSizeSpan = document.getElementById('file-size');
+    fileSizeSpan.textContent = `${(selectedFile.size / 1024).toFixed(2)} KB`;
+
+    const fileTypeSpan = document.getElementById('file-type');
+    fileTypeSpan.textContent = selectedFile.type ? ` | ${selectedFile.type}` : '';
+
+    filePreview.classList.remove('hidden');  // Show file preview
+  }
+});
+
+closeButton.addEventListener('click', () => {
+  fileUploadInput.value = '';  // Clear the input
+  filePreview.classList.add('hidden');  // Hide the file preview
+});
+
+}catch (error) {
+    console.log(error);
+}
+
+
 </script>
 {% endblock content %}

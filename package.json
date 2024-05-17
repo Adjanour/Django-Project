@@ -3,7 +3,8 @@
     "@xterm/xterm": "^5.4.0",
     "faker": "^5.5.3",
     "mongodb": "^6.5.0",
-    "mongoose": "^8.0.4"
+    "mongoose": "^8.0.4",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.1",

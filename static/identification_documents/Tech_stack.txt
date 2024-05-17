@@ -1,0 +1,48 @@
+Tech stack
+----------
+-Django
+-HTML
+-Tailwind CSS
+-JS
+-MSSQL Databases
+
+Will use virtual env
+
+Development Process
+-------------------
+-Develop project structure
+-Create virtual env, Get 3rd Party Libraries, Setup Applications
+-Develop Auth and verification, User Profile
+-Stage on ends
+
+1. Who will use the system
+- Students
+  >Past
+  >Current
+- Administrators
+- Faculty / Other Stakeholders
+
+2. Primary task users need to perform within the system
+- Access transcripts
+- Respond to Transcript requests
+- Generating Reports
+- Automated
+ >Verification of Identity
+ >Verification of Payment
+ >Generation of Transcript
+
+3. Needed by students
+- Request transcritps
+- Determine Type of Transcript needed
+- Determine No of Copies 
+- Determine Mode of Delivery
+- Make payment through platform
+
+4. What level of security is required for the system and data
+- User authentication and verification
+- Data encrytion
+
+5.What reporting and analytics capabilities are needed?
+- Generating transcripts
+- Invoice
+- Transaction history

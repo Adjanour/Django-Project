@@ -6,16 +6,109 @@ body{
     font-family: sans-serif;
 }
 
+
+@media (max-width: 640px) {
+  .progress-item {
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 1rem;
+      width: 25px;
+  }
+  .progress-item .line {
+      left: auto;
+      right: -50%;
+      width: auto;
+  }
+}
+
+:root {
+  --progress-completed-color: #4CAF50;
+  --progress-current-color: #ffc107;
+  --progress-line-color: #e2e8f0;
+}
+
 .progress-item {
-    /* Default styles for each progress item (optional) */
-    display: flex;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.progress-item:last-child .line {
+  display: none; /* Hide the line after the last progress item */
+}
+
 .progress-circle.completed {
-    background-color: #4CAF50; /* Green for completed steps */
-  }
-  
+  background-color: var(--progress-completed-color);
+}
+
 .progress-circle.current {
-    background-color: #ffc107; /* Yellow for current step */
+  background-color: var(--progress-current-color);
+}
+
+
+
+ol:last-child {
+  padding-right: 0;
+}
+
+#file-upload {
+  cursor: pointer;
+}
+
+#file-upload::-webkit-file-upload-button {
+  display: none;
+}
+
+#file-preview {
+  transition: all 0.3s ease-in-out;
+}
+
+#file-preview.show {
+  display: flex;
+}
+
+.info-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  row-gap: 1em;
+  column-gap: 1em;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: row;
+  padding: 15px 10px;
+  width:45%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+.info-item p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.info-item p:first-child {
+  margin-right: 1em;
+}
+.info-item p:last-child {
+  font-weight: normal;
+}
+
+@media (max-width: 640px) {
+  .info-item {
+      width: 100%;
   }
-  
+}
+
+@media (max-width: 640px) {
+  .info-list {
+      flex-direction: column;
+      padding: 1rem;
+  }
+}

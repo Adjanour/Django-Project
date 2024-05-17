@@ -1,0 +1,549 @@
+{% extends "base_layout.html" %} 
+{% block title %}Profile{% endblock title %} 
+{% block content %}
+<div class="mx-auto w-full max-w-3xl">
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        <strong>Error!</strong> Please correct the following errors:
+        <ul>
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ field }}</li>
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <div class="w-full mx-auto mt-2 flex">
+      <nav aria-label="Progress bar for the multi-step process" class="mx-auto text-lg w-full">
+          <ol role="list" class="flex mx-auto w-full">
+              {% for step in steps %}
+              <li class="relative px-8 sm:pr-12 md:pr-12 progress-item w-full mx-auto">
+                  <span style="z-index: 1; align-items: center;" class="flex flex-col align-center justify-center mt-4">
+                      <a href="{% if not step.completed %}javascript:void(0){% else %}/accounts/profile/{{ step.number }}{% endif %}"
+                         aria-disabled="{{step.completed }}"
+                         aria-current="{% if step.current %}step{% endif %}"
+                         class="relative w-12 h-12 sm:w-14 md:w-16 sm:h-14 md:h-16 lg:w-16 lg:h-16 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group hover:border-accent bg-accent hover:bg-accent-dark transition duration-150 ease-in-out progress-circle {% if step.completed %}completed{% elif step.current %}current{% endif %}">
+                          <span class="text-white">{{ step.number }}</span>
+                      </a>
+                      <span style="font-size: 0.9rem" class="mb-4 text-md font-small  sm:font-medium md:font-medium lg:font-medium text-gray-500">{{ step.name }}</span>
+                  </span>
+                  <span style="left:60px" class="absolute inset-0 w-full flex items-center line" aria-hidden="true">
+                      <div class="h-0.5 w-full mb-6 bg-gray-200"></div>
+                  </span>
+              </li>
+              {% endfor %}
+          </ol>
+      </nav>
+  </div>
+
+    {% if step == 1  %}
+      <form method="post" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+        <div class="grid grid-cols-1 gap-4">
+            <!-- Input fields for step 1 -->
+            <div class="flex flex-col">
+              <label for="profile_image" class="text-gray-700 font-medium mb-1">Profile Image</label>
+              <div id="profile-image-dropzone" class="relative w-fit mt-8 border-2 rounded-md  border-gray-300 border-dashed px-4 py-4  flex flex-col items-center justify-start  hover:bg-gray-100 cursor-pointer">
+                <div class="p-2">
+                  {% if user.profile.profile_image %}
+                    <img src="{{ user.profile.profile_image.url }}" class="inline-block h-56 w-56 rounded-md object-cover object-center" id="preview"  alt="A placeholder image for the user's profile picture, which shows a silhouette of a person's head and shoulders">
+                  {% else %}
+                  <img class="inline-block h-56 w-56 rounded-md object-cover object-center" id="preview" src="https://placehold.co/80x80" alt="A placeholder image for the user's profile picture, which shows a silhouette of a person's head and shoulders">
+                  {% endif %}
+                </div>
+                <div class="text-center mt-4">
+                  <p class="mt-1 text-sm text-gray-600">
+                    <span class="font-medium text-accent hover:text-accent-dark transition duration-150 ease-in-out cursor-pointer">
+                      Upload a profile picture
+                    </span>
+                    <span>or drag and drop</span>
+                  </p>
+                  <button type="button" class="inline-flex items-center px-4 py-2 bg-accent text-sm text-gray-500 font-medium rounded-md hover:bg-accent-dark transition duration-150 ease-in-out">
+                    Browse
+                  </button>
+                </div>
+              </div>
+              <input type="file"  id="profile_image" name="profile_image" class="hidden" accept=".jpg,.jpeg,.png">
+              {% for error in form.profile_image.errors %}
+                <p class="text-red-500 text-sm mt-2">{{ error }}</p>
+              {% endfor %}
+            </div>
+            <div class="flex flex-col">
+              <label for="email" class="text-gray-700 font-medium mb-2">Email</label>
+              <input type="email" id="email" name="email" value="{{form.email.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+              {% for error in form.email.errors %}
+                  <p class="text-red-500 text-sm">{{ error }}</p>
+              {% endfor %}
+            </div>
+            <div class="flex flex-col w-full sm:flex-row md:flex-row lg:flex-row">
+              <div class="flex flex-col w-full mr-4">
+                <div class="flex flex-col">
+                  <label for="first_name" class="text-gray-700 font-medium mb-2">First Name</label>
+                  <input type="text" id="first_name" name="first_name" value="{{form.first_name.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                    {% for error in form.first_name.errors %}
+                        <p class="text-red-500 text-sm">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <div class="flex flex-col">
+                    <label for="last_name" class="text-gray-700 font-medium mb-2">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" value="{{form.last_name.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                    {% for error in form.last_name.errors %}
+                        <p class="text-red-500 text-sm">{{ error }}</p>
+                    {% endfor %}
+                </div>
+              </div>
+              <div class="flex flex-col w-full">
+                  <label for="other_names" class="text-gray-700 font-medium mb-2">Other Names</label>
+                  <input type="text" id="other_names" name="other_names" value="{{form.other_names.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                  {% for error in form.other_names.errors %}
+                      <p class="text-red-500 text-sm">{{ error }}</p>
+                  {% endfor %}
+              </div>
+            </div>
+            
+            <!-- Adrees and contact -->
+            <div class="flex flex-col w-full sm:flex-row md:flex-row lg:flex-row">
+              
+              <div class="flex flex-col w-full mr-4">
+                <div class="flex flex-col w-full ">
+                  <label for="phone_number" class="text-gray-700 font-medium mb-2">Phone Number</label>
+                  <input type="text" id="phone_number" name="phone_number" value="{{form.phone_number.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                  {% for error in form.phone_number.errors %}
+                      <p class="text-red-500 text-sm">{{ error }}</p>
+                  {% endfor %}
+                </div>
+                <div class="flex flex-col w-full">
+                  <label for="residential-address" class="text-gray-700 font-medium mb-2">Residential Address</label>
+                  <input type="text" id="residential-address" name="residential_address" value="{{form.residential_address.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                  {% for error in form.residential_address.errors %}
+                      <p class="text-red-500 text-sm">{{ error }}</p>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="flex flex-col w-full">
+                <label for="postal-address" class="text-gray-700 font-medium mb-2">Postal Address</label>
+                <input type="text" id="postal-address" name="postal_address" value="{{form.postal_address.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                {% for error in form.postal_address.errors %}
+                    <p class="text-red-500 text-sm">{{ error }}</p>
+                {% endfor %}
+              </div>
+            </div>
+              
+            </div>
+            <div class="flex flex-col w-full sm:flex-row md:flex-row lg:flex-row flex-grow" >
+
+                {# Gender#}
+                <div class="flex flex-col w-full grow mr-4">
+                    <label for="gender" class="text-gray-700 font-medium mb-2">Gender</label>
+                    <select id="gender" name="gender" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                        <option value="">Gender</option>
+                        {% for gender in genders %}
+                            <option value="{{ gender.id }}" {% if form.gender.value == gender.id %} selected{% endif %}>{{ gender.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+             <div class="flex flex-col w-full">
+                  <label for="date_of_birth" class="text-gray-700 font-medium mb-2">Date of Birth</label>
+                  <input type="date" id="date_of_birth" name="date_of_birth" value="{{form.instance.date_of_birth|date:"Y-m-d"}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                  {% for error in form.date_of_birth.errors %}
+                      <p class="text-red-500 text-sm">{{ error }}</p>
+                  {% endfor %}
+                </div>
+            </div>
+          <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">
+            Next
+          </button>
+      </form>
+    {% endif %}
+
+    {% if step == 2  %}
+      <form method="post" enctype="multipart/form-data" class="space-y-4">
+          {% csrf_token %}
+          <div class="grid grid-cols-1 gap-4">
+              <!-- Input fields for step 2 -->
+              <div class="flex flex-col">
+                <label for="identification_number" class="text-gray-700 font-medium mb-2">Id Number</label>
+                <input type="text" id="identification_number" name="identification_number" placeholder="Enter Id number" value="{{form.identification_number.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                {% for error in form.identification_number.errors %}
+                    <p class="text-red-500 text-sm">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="flex flex-col">
+                <label for="identification_type" class="text-gray-700 font-medium mb-2">Id Type</label>
+                <select id="identification_type" name="identification_type" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+                <option value="">Select Identification Type</option>
+                    {% for id_type in id_types %}
+                        {% if form.identification_type.value == id_type.id %}
+                        <option value="{{ id_type.id }}" selected>{{ id_type.name }}</option>
+                        {% endif %}
+                        <option value="{{ id_type.id }}">{{ id_type.name }}</option>
+                    {% endfor %}
+                </select>
+                {% for error in form.identification_type.errors %}
+                    <p class="text-red-500 text-sm">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="flex flex-col">
+                <label for="identification_file" class="text-gray-700 font-medium mb-2">ID File</label>
+
+                  <div id="file-container" class="flex flex-col items-center justify-center bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex flex-row items-center justify-center bg-gray-200 rounded-lg p-4  w-full m-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="font-size: 36px; width:36px;height:36px" class=" mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                      </svg>
+                      <p class="text-gray-500 text-sm mt-2">Drag and drop files here or click to select</p>
+                    </div>
+                    <input type="file" class="hidden" id="file-upload"  value="{% if form.identification_file.url %}{{ form.identification_file.url }}{% endif %}" name="identification_file" />
+                    <div id="file-preview" class="items-start justify-between w-full mb-2 hidden">
+                      <div class="flex items-center">
+                          <div class="bg-accent text-white rounded-full p-2 mr-2">
+                            <?xml version="1.0" ?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                            <svg fill="#000000" width="36px" height="36px" viewBox="0 0 32 32" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><rect height="1" width="9" x="13" y="2"/><rect height="1" width="12" x="10" y="29"/><rect height="1" transform="translate(-11 24) rotate(-90)" width="17" x="-2" y="17"/><rect height="1" transform="translate(9.5 41.5) rotate(-90)" width="20" x="15.5" y="15.5"/><rect height="1" width="7" x="6" y="8"/><rect height="1" width="8" x="15" y="5"/><rect height="1" width="8" x="15" y="8"/><rect height="1" width="14" x="9" y="11"/><rect height="1" width="14" x="9" y="14"/><rect height="1" width="14" x="9" y="17"/><rect height="1" width="14" x="9" y="20"/><rect height="1" width="14" x="9" y="23"/><rect height="1" width="14" x="9" y="26"/><rect height="1" transform="translate(-1.05 8.18) rotate(-45)" width="8.49" x="5.11" y="4.85"/><rect height="1" transform="translate(7 18) rotate(-90)" width="7" x="9" y="5"/><path d="M22,2V3h2a1,1,0,0,1,1,1V6h1V4a2,2,0,0,0-2-2Z"/><path d="M22,30V29h2a1,1,0,0,0,1-1V26h1v2a2,2,0,0,1-2,2Z"/><path d="M10,30V29H8a1,1,0,0,1-1-1V26H6v2a2,2,0,0,0,2,2Z"/></svg>                      </div>
+                          <div>
+                              <p class="text-sm font-medium text-gray-800" id="file-name"></p>
+                              <p class="text-xs text-gray-500">
+                                  <span id="file-size"></span>
+                                  <span id="file-type"></span>
+                              </p>
+                          </div>
+                      </div>
+                        {% for error in form.identification_file.errors %}
+                        <p class="text-red-500 text-sm">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">Next</button>
+      </form>
+    {% endif %}
+    {% if step == 3 %}
+      <form id="course-log-form" method="post" class="space-y-4">
+    {% csrf_token %}
+    <div class="grid grid-cols-1 gap-4">
+        <!-- Input fields for step 3 -->
+        {% for form in course_log_forms %}
+        <div class="course-log">
+            <div class="mb-4">
+                <label for="{{ form.prefix }}-index_number" class="text-gray-700 font-medium block mb-2">Index Number</label>
+                <input type="text" id="{{ form.prefix }}-index_number" name="{{ form.prefix }}-index_number" class="w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500" value="{{ form.instance.index_number }}">
+            </div>
+
+            <div class="mb-4">
+                <label for="{{ form.prefix }}-full_name" class="text-gray-700 font-medium block mb-2">Full Name (As Shown on ID Card)</label>
+                <input type="text" id="{{ form.prefix }}-full_name" name="{{ form.prefix }}-full_name" class="w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500" value="{{ form.instance.full_name }}">
+            </div>
+
+            <div id="programme-entries-{{ forloop.counter }}" class="programme-entries bg-white shadow-md w-full p-4 mb-2 rounded-md">
+                <div class="mb-4">
+                    <label for="{{ form.prefix }}-graduate_type" class="text-gray-700 font-medium block mb-2">Graduate Type</label>
+                    <select id="{{ form.prefix }}-graduate_type" name="{{ form.prefix }}-graduate_type" class="w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        <option value="">Select Type</option>
+                        {% for graduate_type in graduate_types %}
+                        <option value="{{ graduate_type.id }}" {% if graduate_type.id == form.instance.graduate_type_id %}selected{% endif %}>{{ graduate_type.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.prefix }}-programme" class="text-gray-700 font-medium block mb-2">Programme</label>
+                    <select id="{{ form.prefix }}-programme" name="{{ form.prefix }}-programme" class="w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        <option value="">Select Programme</option>
+                        {% for programme in programmes %}
+                        <option value="{{ programme.id }}" {% if programme.id == form.instance.programme_id %}selected{% endif %}>{{ programme.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.prefix }}-admission_year" class="text-gray-700 font-medium block mb-2">Admission Year</label>
+                    <input type="number" id="{{ form.prefix }}-admission_year" name="{{ form.prefix }}-admission_year" min="2000" max="2050" class="w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500" value="{{ form.instance.admission_year }}">
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.prefix }}-graduation_year" class="text-gray-700 font-medium block mb-2">Graduation Year (or Last Year)</label>
+                    <input type="number" id="{{ form.prefix }}-graduation_year" name="{{ form.prefix }}-graduation_year" min="2000" max="2050" class="w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500" value="{{ form.instance.graduation_year }}">
+                </div>
+
+                <!-- Hidden field for ID -->
+                <input type="hidden" name="{{ form.prefix }}-id" value=" {% if form.instance.id is NONE %}1{% else %}{{ form.instance.id }}{% endif %}">
+{#              remove button#}
+                <button type="button"  class=" remove-button inline-flex items-center px-4 py-2 bg-red-500 text-white font-medium rounded-md hover:bg-red-700 focus:ring-4 focus:ring-red-500 focus:outline-none">Remove</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button id="add-programme" type="button" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">Add Programme</button>
+    <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">Next</button>
+</form>
+
+
+    {% endif %}
+    {% if step == 4 %}
+    <div class="w-full mx-auto py-6">
+        <h3 class="text-2xl font-bold mb-6">Review Submission</h3>
+
+        <div class="bg-white shadow-md rounded py-6 mb-8 w-full">
+         {% if profile.profile_image %}
+                <div style="margin-left: 1.8rem" class="rounded-md flex flex-col align-start justify-center w-full">
+                    <img src="{{ profile.profile_image.url }}" alt="Profile Image" class="w-48 h-48 object-cover rounded mb-6">
+                </div>
+            {% endif %}
+            <h2 style="margin-left: 1.8rem" class="text-2xl font-semibold mb-4">Personal Information</h2>
+            <div class="info-list">
+                <div class="info-item w-full">
+                    <p>First Name:</p>
+                    <p>{{ profile.first_name }}</p>
+                </div>
+                <div class="info-item">
+                    <p>Last Name:</p>
+                    <p>{{ profile.last_name }}</p>
+                </div>
+                <div class="info-item">
+                    <p>Other Names:</p>
+                    <p>{{ profile.other_names }}</p>
+                </div>
+                <div class="info-item">
+                    <p>Email:</p>
+                    <p>{{ profile.email }}</p>
+                </div>
+                <div class="info-item">
+                    <p>Phone Number:</p>
+                    <p>{{profile.phone_number}}</p>
+                </div>
+                <div class="info-item">
+                    <p>Date of Birth:</p>
+                    <p>{{ profile.date_of_birth }}</p>
+                </div>
+                <div class="info-item">
+                        <p >Gender:</p>
+                        <p>{{ profile.gender.name }}</p>
+                </div>
+                    <div class="info-item">
+                        <p >Postal Address:</p>
+                        <p>{{ profile.postal_address }}</p>
+                    </div>
+                    <div class="info-item">
+                        <p >Residential Address:</p>
+                        <p>{{ profile.residential_address }}</p>
+                    </div>
+                    <div class="info-item">
+                        <p >Id Number:</p>
+                        <p>{{ profile.identification_number }}</p>
+                    </div>
+                    <div class="info-item">
+                        <p >Id Type:</p>
+                        <p>{{ profile.identification_type.name }}</p>
+                    </div>
+
+            </div>
+            <div style="margin: 1.8rem;" class="mb-2 p-4  rounded-md bg-gray-100">
+                {% if profile.identification_file %}
+                    <h3 class="text-xl font-medium mb-2">Identification File</h3>
+                    <a href="{{ profile.identification_file.url }}" class="text-blue-500 underline mb-6 ">View Document</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="bg-white shadow-md rounded p-6">
+            <h2 class="text-2xl font-semibold mb-4">Programme</h2>
+             <div class="space-y-4">
+                {% for log in course_logs %}
+                    <div class="bg-gray-100 py-4 px-2 rounded-md flex items-center gap-1">
+                        <div class="w-1/12 h-full bg-white flex justify-center align-center rounded-full" style="height: 100%">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                        </div>
+                        <div class="w-11/12 space-y-2">
+                            <div class="flex items-center">
+
+                                <span style="font-size: 0.9rem" class="w-full">{{ log.index_number }}</span>
+                            </div>
+                            <div class="flex items-center">
+
+                                <span style="font-size: 0.9rem" class="w-full">{{ log.full_name }}</span>
+                            </div>
+                            <div class="flex items-center">
+
+                                <span style="font-size: 0.9rem" class="w-ful">{{ log.graduate_type.name }}</span>
+                            </div>
+                            <div class="flex items-center">
+
+                                <span style="font-size: 0.9rem" class="w-full">{{ log.programme.name }}</span>
+                            </div>
+                            <div class="flex items-center">
+
+                                <span style="font-size: 0.9rem" class="w-full">{{ log.admission_year }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span style="font-size: 0.9rem" class="w-full">{{ log.graduation_year }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+
+
+    try {
+      const profileImageDropzone = document.getElementById('profile-image-dropzone');
+      const profileImageInput = document.getElementById('profile_image');
+      const previewImage = document.getElementById('preview');
+
+        profileImageDropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      profileImageDropzone.classList.add('bg-gray-200');
+    });
+
+    profileImageDropzone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      profileImageDropzone.classList.remove('bg-gray-200');
+    });
+
+    profileImageDropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const droppedFiles = e.dataTransfer.files;
+
+      // Basic validation (replace with your preferred logic)
+      if (droppedFiles.length === 0) {
+        alert('Please select an image file');
+        return;
+      }
+
+      const acceptedExtensions = ['jpg', 'jpeg', 'png'];
+      const fileExtension = droppedFiles[0].name.split('.').pop().toLowerCase();
+
+      if (!acceptedExtensions.includes(fileExtension)) {
+        alert('Only JPG, JPEG, and PNG files are allowed');
+        return;
+      }
+
+      // Assuming you have logic to handle the uploaded file (e.g., sending to server)
+      // ... your upload logic here ...
+
+      // Update preview image (replace with your preferred method)
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewImage.src = e.target.result;
+      };
+      reader.readAsDataURL(droppedFiles[0]);
+
+      // Set the selected file in the hidden input (optional)
+      profileImageInput.files = droppedFiles;
+    });
+
+    // Handle click on "
+    profileImageDropzone.addEventListener('click', () => {
+      profileImageInput.click();
+    });
+
+    profileImageInput.addEventListener("change", function() {
+      const file = profileImageInput.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    }catch (error) {
+        console.log(error);
+    }
+
+    try{
+
+      const fileUpload = document.getElementById('file-upload');
+      const filePreview = document.getElementById('file-preview');
+      const fileName = document.getElementById('file-name');
+      const fileSize = document.getElementById('file-size');
+      const fileType = document.getElementById('file-type');
+      const fileContainer = document.getElementById('file-container');
+
+      fileUpload.addEventListener('change', () => {
+        const file = fileUpload.files[0];
+        if (file) {
+          fileName.textContent = file.name;
+          // get file size
+          fileSize.textContent = `${(file.size / 1024).toFixed(2)} KB`;
+          fileType.textContent = file.type ? ` | ${file.type}` : '';
+
+          filePreview.classList.remove('hidden');
+        } else {
+          filePreview.classList.remove('show');
+        }
+      });
+
+      fileContainer.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileContainer.classList.remove('bg-white')
+        fileContainer.classList.add('bg-gray-200');
+      });
+
+      fileContainer.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        fileContainer.classList.remove('bg-gray-200');
+      });
+
+      fileContainer.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const droppedFiles = e.dataTransfer.files;
+        fileUpload.files = droppedFiles;
+        fileContainer.classList.remove('bg-gray-200');
+        fileUpload.dispatchEvent(new Event('change'));
+      });
+
+      fileContainer.addEventListener('click', () => {
+        fileUpload.click();
+      });
+    }catch (error) {
+        console.log(error);
+    }
+
+    try {
+
+    const addProgrammeButton = document.getElementById('add-programme');
+    const programmeEntries = document.querySelectorAll('.programme-entries');
+    let formCounter = programmeEntries.length;
+    const removeButton = document.querySelectorAll('.remove-button')
+
+    addProgrammeButton.addEventListener('click', function() {
+        formCounter++;
+
+        const newProgrammeEntry = programmeEntries[0].cloneNode(true);
+        newProgrammeEntry.id = `programme-entries-${formCounter}`;
+
+        // Update field names and IDs within the new form
+        newProgrammeEntry.querySelectorAll('select, input').forEach(element => {
+            const originalName = element.name;
+            const newName = originalName.replace(/-\d+/, `-${formCounter}`);
+            element.name = newName;
+            element.id = newName;
+
+            if (element.type !== 'hidden') {
+                element.value = ''; // Clear the value for new entries
+            }
+        });
+
+        // Clear hidden field value
+        newProgrammeEntry.querySelector('input[type="hidden"]').value = formCounter+1;
+
+        programmeEntries[0].parentNode.parentNode.append(newProgrammeEntry);
+    });
+
+
+
+
+
+    }catch (e) {
+        console.log(e);
+    }
+
+    </script>
+{% endblock content %}

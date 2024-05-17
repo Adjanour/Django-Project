@@ -1,0 +1,72 @@
+Mining activities especially illegal minining activites pose a significant threat to our water supply. 
+
+Creating the need for stakeholders that involved in processing and purifying water for usage to take another step in checking 
+water quality
+
+So say 	GWCl or drinking water producers like voltic and the likes , and 
+even individuals with large water reserve  now need a faster solution for testing the purity of water 
+both before and after purification 
+
+
+
+
+Go get samples , go to the lab , and do laboratory analysis , each time , after each purification process 
+
+
+
+
+Get a bunch of sensors that measure of the parameters involved in measuring WQI and WQC 
+Feed those values to Machine Learning models to make predictions and insights
+
+
+- looking at the logistics involved in making the trips to the water sources , taking periodic samples , 
+the skilled labor cost , and the laboratory equipment , and their ready availability ,
+time it takes to get all taht done 
+
+
+
+
+
+Water Coductivity Sensor 125$
+TDS Sensor 13$
+Gravity Dissolved Oxygen Sensor $169
+Ph Sensor $29
+TSS $24
+
+
+6,000 ghs
+
+
+
+
+-- there are 5 water quality classs 
+AA , A , B , C and D
+according to UN environment programme
+
+Excellent 91 - 100
+Good 71 90
+Average 26 - 50
+Poor 0 -25
+
+
+-- Collect the sensor values 
+-- Feed it to models to perform predictions and generate insights
+-- Store it in a database so we have historical data 
+
+-- outlier values , toxic level get's very high we can send an alert 
+
+
+
+-- The closest thing we have is conceptualized idea
+knowing what models to use , the software system , the software architecture that would process the 
+sensor values and give the appropriate respone , 
+we know what models to use , 
+data to stor , information to give
+
+
+
+
+An integrated system 
+An instant alert system 
+
+Putting eyes on our water 
