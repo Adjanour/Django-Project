@@ -130,7 +130,7 @@ def profile(request, step=1):
                 'course_logs': course_logs
             }
             return render(request, 'profile.improved.html', context)
-s        else:
+        else:
             form = get_form_get(step, profile)
 
     context = {'form': form, 'steps': steps, 'id_types': id_types, 'step': step, 'genders': genders,
