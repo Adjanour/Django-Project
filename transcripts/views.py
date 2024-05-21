@@ -1,21 +1,23 @@
-from django.views.generic import TemplateView
+# views.py
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm
+from django.contrib.auth.decorators import login_required
+from .forms import TranscriptRequestForm
+from accounts.models import StudentProfile
 
-class HomePageView(TemplateView):
- template_name = "home.html"
-
-
-
-def register(request):
+@login_required
+def request_transcript(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = TranscriptRequestForm(request.POST)
         if form.is_valid():
-            form.save()
-            # Success message or redirect to login page
-            return redirect('login')  
+            transcript_request = form.save(commit=False)
+            transcript_request.user = request.user
+            transcript_request.profile = StudentProfile.objects.get(user=request.user)
+            transcript_request.save()
+            return redirect('transcript_request_success')
     else:
-        form = RegistrationForm()
+        form = TranscriptRequestForm()
+    return render(request, 'request_transcript.html', {'form': form})
 
-    context = {'form': form}
-    return render(request, 'register.html', context)
+@login_required
+def transcript_request_success(request):
+    return render(request, 'request_success.html')

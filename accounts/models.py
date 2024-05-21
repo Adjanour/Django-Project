@@ -6,7 +6,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class CustomUser(AbstractUser):
     # add additional fields in here
-    profile = models.OneToOneField('StudentProfile', on_delete=models.CASCADE, null=True, blank=True)
+    # profile = models.OneToOneField('StudentProfile', on_delete=models.CASCADE, null=True, blank=True)
+    pass
 
 
 class IdentificationType(models.Model):
@@ -38,6 +39,7 @@ class GraduateType(models.Model):
 
 
 class StudentProfile(models.Model):
+    user = models.OneToOneField(CustomUser,on_delete=models.PROTECT,null=False,blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     other_names = models.CharField(max_length=30, blank=True)
@@ -56,10 +58,11 @@ class StudentProfile(models.Model):
     graduation_year = models.DateField(blank=True, null=True)
     verification_document = models.FileField(upload_to='verification_documents/', blank=True)
     verification_status = models.CharField(max_length=20, choices=(
+        ('NOT SUBMITED','Not Submited'),
         ('PENDING', 'Pending'),
         ('VERIFIED', 'Verified'),
         ('REJECTED', 'Rejected'),
-    ), default='PENDING')
+    ), default='NOT SUBMITED')
 
 
 class CourseLog(models.Model):

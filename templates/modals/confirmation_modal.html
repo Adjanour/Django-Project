@@ -1,0 +1,14 @@
+<!-- templates/confirmation_modal.html -->
+<div id="confirmationModal" class="modal fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
+    <div class=" modal-content bg-white rounded-lg shadow-lg w-1/3 p-6">
+        <span class="close-button text-gray-500 hover:text-gray-700 cursor-pointer float-right">&times;</span>
+        <h2 id="confirmationTitle" class="text-xl font-semibold mb-4">Confirm Action</h2>
+        <p id="confirmationMessage" class="mb-6">Are you sure you want to submit?</p>
+        <form id="confirmationForm" method="post" class="flex justify-end">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded mr-2 hover:bg-red-600">Yes</button>
+            <button type="button" id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">No</button>
+        </form>
+    </div>
+</div>
+

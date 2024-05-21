@@ -1,0 +1,59 @@
+<form method="post" enctype="multipart/form-data" class="space-y-4">
+    {% csrf_token %}
+    <div class="grid grid-cols-1 gap-4">
+        <!-- Input fields for step 2 -->
+        <div class="flex flex-col">
+          <label for="identification_number" class="text-gray-700 font-medium mb-2">Id Number</label>
+          <input type="text" id="identification_number" name="identification_number" placeholder="Enter Id number" value="{{form.identification_number.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+          {% for error in form.identification_number.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+      </div>
+      <div class="flex flex-col">
+          <label for="identification_type" class="text-gray-700 font-medium mb-2">Id Type</label>
+          <select id="identification_type" name="identification_type" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+          <option value="">Select Identification Type</option>
+              {% for id_type in id_types %}
+                  {% if form.identification_type.value == id_type.id %}
+                  <option value="{{ id_type.id }}" selected>{{ id_type.name }}</option>
+                  {% endif %}
+                  <option value="{{ id_type.id }}">{{ id_type.name }}</option>
+              {% endfor %}
+          </select>
+          {% for error in form.identification_type.errors %}
+              <p class="text-red-500 text-sm">{{ error }}</p>
+          {% endfor %}
+      </div>
+      <div class="flex flex-col">
+          <label for="identification_file" class="text-gray-700 font-medium mb-2">ID File</label>
+
+            <div id="file-container" class="flex flex-col items-center justify-center bg-white p-4 rounded-lg shadow-md">
+              <div class="flex flex-row items-center justify-center bg-gray-200 rounded-lg p-4  w-full m-2">
+                <svg xmlns="http://www.w3.org/2000/svg" style="font-size: 36px; width:36px;height:36px" class=" mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                <p class="text-gray-500 text-sm mt-2">Drag and drop files here or click to select</p>
+              </div>
+              <input type="file" class="hidden" id="file-upload"  value="{% if form.identification_file.url %}{{ form.identification_file.url }}{% endif %}" name="identification_file" />
+              <div id="file-preview" class="items-start justify-between w-full mb-2 hidden">
+                <div class="flex items-center">
+                    <div class="bg-accent text-white rounded-full p-2 mr-2">
+                      <?xml version="1.0" ?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                      <svg fill="#000000" width="36px" height="36px" viewBox="0 0 32 32" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><rect height="1" width="9" x="13" y="2"/><rect height="1" width="12" x="10" y="29"/><rect height="1" transform="translate(-11 24) rotate(-90)" width="17" x="-2" y="17"/><rect height="1" transform="translate(9.5 41.5) rotate(-90)" width="20" x="15.5" y="15.5"/><rect height="1" width="7" x="6" y="8"/><rect height="1" width="8" x="15" y="5"/><rect height="1" width="8" x="15" y="8"/><rect height="1" width="14" x="9" y="11"/><rect height="1" width="14" x="9" y="14"/><rect height="1" width="14" x="9" y="17"/><rect height="1" width="14" x="9" y="20"/><rect height="1" width="14" x="9" y="23"/><rect height="1" width="14" x="9" y="26"/><rect height="1" transform="translate(-1.05 8.18) rotate(-45)" width="8.49" x="5.11" y="4.85"/><rect height="1" transform="translate(7 18) rotate(-90)" width="7" x="9" y="5"/><path d="M22,2V3h2a1,1,0,0,1,1,1V6h1V4a2,2,0,0,0-2-2Z"/><path d="M22,30V29h2a1,1,0,0,0,1-1V26h1v2a2,2,0,0,1-2,2Z"/><path d="M10,30V29H8a1,1,0,0,1-1-1V26H6v2a2,2,0,0,0,2,2Z"/></svg>                      </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-800" id="file-name"></p>
+                        <p class="text-xs text-gray-500">
+                            <span id="file-size"></span>
+                            <span id="file-type"></span>
+                        </p>
+                    </div>
+                </div>
+                  {% for error in form.identification_file.errors %}
+                  <p class="text-red-500 text-sm">{{ error }}</p>
+                  {% endfor %}
+              </div>
+            </div>
+      </div>
+    </div>
+    <button type="submit" style="float: right;" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">Next</button>
+</form>

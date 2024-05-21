@@ -1,112 +1,47 @@
-{% extends "base_layout.html" %} 
-{% block title %}Profile{% endblock title %} 
+{% extends "base_layout.html" %}
+
+{% block title %}Profile{% endblock title %}
+
 {% block content %}
-<div class="mx-auto w-full">
+<div class="mx-auto w-full max-w-3xl">
     {% if form.errors %}
     <div class="alert alert-danger">
         <strong>Error!</strong> Please correct the following errors:
         <ul>
             {% for field, errors in form.errors.items %}
                 {% for error in errors %}
-                    <li>{{field}}</li>
-                    <li>{{ error }}</li>
+                    <li>{{ field }}: {{ error }}</li>
                 {% endfor %}
             {% endfor %}
         </ul>
     </div>
     {% endif %}
-    <div class="w-full mx-auto mt-8 flex">
-        <nav aria-label="Progress" style="font-size:1.5rem" class="mx-auto text-lg w-full">          
-          <ol role="list" class="flex mx-auto w-full">
-            {% for step in steps %}  
-            <li class="relative pr-8 sm:pr-16 md:pr-16 progress-item w-full mx-auto">
-              <span style="z-index: 1;align-items:center;" class="flex flex-col align-center justify-center mt-4">
-{#                {% if step.completed %}#}
-              <a href="{% if not step.completed %}javascript:void(0){% else %}/accounts/profile/{{ step.number }}{% endif %}" aria-disabled="{% if not step.completed %}True{% endif %}" class="  relative  w-16 h-16 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group hover:border-accent  bg-accent  hover:bg-accent-dark transition duration-150 ease-in-out progress-circle {% if step.completed %}completed{% elif step.current %}current{% endif %}">
-{#                {% elif step.current %}#}
-{#                  <a href="/accounts/profile/{{ step.number }}" class=" relative w-16 h-16 flex items-center justify-center bg-accent rounded-full hover:bg-accent-dark transition duration-150 ease-in-out progress-circle current">#}
-{#                {% else %}#}
-{#                  <a href="/accounts/profile/{{ step.number }}" class=" relative  w-16 h-16 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group hover:border-accent transition duration-150 ease-in-out progress-circle">#}
-{#                {% endif %}#}
 
-                <span class="text-white "> {{ step.number }} </span>  </a>
-
-                <span class="mb-6 text-sm font-medium text-gray-500"> {{ step.name }} </span>  
-              </span>
-
-              <span style="left:80px" class="absolute inset-0 w-full flex items-center line" aria-hidden="true">
-                  <div  class="h-0.5 w-full mb-6 bg-gray-200"></div>
-              </span>
-
-            </li>
-            {% endfor %}
-          </ol>
+    <div class="w-full mx-auto mt-2 flex">
+        <nav aria-label="Progress bar for the multi-step process" class="mx-auto text-lg w-full">
+            <ol role="list" class="flex mx-auto w-full">
+                {% for step in steps %}
+                <li class="relative px-8 sm:pr-12 md:pr-12 progress-item w-full mx-auto">
+                    <span style="z-index: 1; align-items: center;" class="flex flex-col align-center justify-center mt-4">
+                        <a href="{% if step.completed %}/accounts/profile/{{ step.number }}{% else %}javascript:void(0){% endif %}"
+                           aria-disabled="{{ step.completed }}"
+                           aria-current="{% if step.current %}step{% endif %}"
+                           class="relative w-12 h-12 sm:w-14 md:w-16 sm:h-14 md:h-16 lg:w-16 lg:h-16 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group hover:border-accent bg-accent hover:bg-accent-dark transition duration-150 ease-in-out progress-circle {% if step.completed %}completed{% elif step.current %}current{% endif %}">
+                            <span class="text-white">{{ step.number }}</span>
+                        </a>
+                        <span style="font-size: 0.9rem" class="mb-4 text-md font-small sm:font-medium md:font-medium lg:font-medium text-gray-500">{{ step.name }}</span>
+                    </span>
+                    <span style="left:60px" class="absolute inset-0 w-full flex items-center line" aria-hidden="true">
+                        <div class="h-0.5 w-full mb-6 bg-gray-200"></div>
+                    </span>
+                </li>
+                {% endfor %}
+            </ol>
         </nav>
     </div>
 
-    {% if step == 1  %}
-      <form method="post" enctype="multipart/form-data" class="space-y-4">
-      {% csrf_token %}
-        <div class="grid grid-cols-1 gap-4">
-            <div class="flex flex-col">
-            <label for="first_name" class="text-gray-700 font-medium mb-2">First Name</label>
-            <input type="text" id="first_name" name="first_name" value="{{form.first_name.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
-            {% for error in form.first_name.errors %}
-                <p class="text-red-500 text-sm">{{ error }}</p>
-            {% endfor %}
-            </div>
-            <div class="flex flex-col">
-            <label for="last_name" class="text-gray-700 font-medium mb-2">Last Name</label>
-            <input type="text" id="last_name" name="last_name" value="{{form.last_name.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
-            {% for error in form.last_name.errors %}
-                <p class="text-red-500 text-sm">{{ error }}</p>
-            {% endfor %}
-            </div>
-            <div class="flex flex-col">
-            <label for="other_names" class="text-gray-700 font-medium mb-2">Other Names (Optional)</label>
-            <input type="text" id="other_names" name="other_names" value="{{form.other_names.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
-            {% for error in form.other_names.errors %}
-                <p class="text-red-500 text-sm">{{ error }}</p>
-            {% endfor %}
-            </div>
-            <div class="flex flex-col">
-              <label for="profile_image" class="text-gray-700 font-medium mb-1">Profile Image</label>
-              <div id="profile-image-dropzone" class="relative w-full mt-8 border-2 rounded-md  border-gray-300 border-dashed px-6 py-6  flex flex-row items-center justify-start  hover:bg-gray-100 cursor-pointer">
-                <div class="mx-2 p-4">
-                  {% if user.profile.profile_image %}
-                    <img src="{{ user.profile.profile_image.url }}" class="inline-block h-48 w-48 rounded-md object-cover object-center" id="preview" src="https://placehold.co/80x80" alt="A placeholder image for the user's profile picture, which shows a silhouette of a person's head and shoulders">
-                  {% else %}
-                  <img class="inline-block h-48 w-48 rounded-md object-cover object-center" id="preview" src="https://placehold.co/80x80" alt="A placeholder image for the user's profile picture, which shows a silhouette of a person's head and shoulders">
-                  {% endif %}
-                </div>
-                <div class="text-center mt-4">
-                  <p class="mt-1 text-sm text-gray-600">
-                    <span class="font-medium text-accent hover:text-accent-dark transition duration-150 ease-in-out cursor-pointer">
-                      Upload a profile picture
-                    </span>
-                    <span>or drag and drop</span>
-                  </p>
-                  <button type="button" class="inline-flex items-center px-4 py-2 bg-accent text-sm text-gray-500 font-medium rounded-md hover:bg-accent-dark transition duration-150 ease-in-out">
-                    Browse
-                  </button>
-                </div>
-              </div>
-              <input type="file"  id="profile_image" name="profile_image" class="hidden" accept=".jpg,.jpeg,.png">
-              {% for error in form.profile_image.errors %}
-                <p class="text-red-500 text-sm mt-2">{{ error }}</p>
-              {% endfor %}
-            </div>
-            
-          
-            <input type="file" id="verification_document" name="verification_document" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
-            {% for error in form.verification_document.errors %}
-                <p class="text-red-500 text-sm">{{ error }}</p>
-            {% endfor %}
-        </div>
-        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">
-            Next
-        </button>
-      </form>
+    {% if step == 1 %}
+   
     {% endif %}
 
     {% if step == 2  %}
