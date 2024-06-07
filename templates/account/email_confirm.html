@@ -15,21 +15,21 @@
         <a href="mailto:{{ email }}" class="text-blue-500 underline">
           {{ email }}
         </a> 
-        is an e-mail address for user {{ user_display }}.
+        is the email address for user {{ user_display }}.
       {% endblocktrans %}
     </p>
     <form method="post" action="{% url 'account_confirm_email' confirmation.key %}" class="flex justify-end">
       {% csrf_token %}
-      <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none">
+      <button type="submit" class="btn btn-blue">
         {% trans 'Confirm' %}
       </button>
     </form>
   {% else %}
     <p class="text-gray-700">
       {% blocktrans %}
-        This e-mail confirmation link expired or is invalid. Please
+        This email confirmation link is invalid or has expired. Please
         <a href="{{ email_url }}" class="text-blue-500 underline">
-          issue a new e-mail confirmation request.
+          request a new email confirmation link.
         </a>
       {% endblocktrans %}
     </p>

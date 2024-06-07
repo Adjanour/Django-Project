@@ -1,16 +1,27 @@
-{% extends "base.html" %}
+{% extends "layout.html" %}
 {% load i18n %}
 {% load allauth %}
 
 {% block head_title %} {% trans "Verify Your Email Address" %} {% endblock head_title %}
 
 {% block content %}
-<div class="container mx-auto w-full  p-4">
-  <h1 class="text-2xl font-medium mb-4">{% trans "Verify Your Email Address" %}</h1>
-  <p class="text-gray-700 mb-4">
-    {% blocktrans %}
-      We have sent an email to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification email in your main inbox, check your spam folder. Please contact us if you do not receive the verification email within a few minutes.
-    {% endblocktrans %}
-  </p>
+<div class="min-h-screen w-full flex items-center justify-center bg-gray-100 p-4">
+    <div class="bg-white rounded-lg shadow-lg p-8 max-w-md mx-auto">
+        <h1 class="text-3xl font-bold text-green-700 mb-4 text-center">{% trans "Verify Your Email Address" %}</h1>
+        <p class="text-gray-700 mb-6 text-center">
+            {% blocktrans %}
+                We have sent an email to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification email in your main inbox, check your spam folder. Please contact us if you do not receive the verification email within a few minutes.
+            {% endblocktrans %}
+        </p>
+        <div class="text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12V14H8V12M16 8V10H8V8M16 4V6H8V4M5 20H19C20.1046 20 21 19.1046 21 18V6C21 4.89543 20.1046 4 19 4H5C3.89543 4 3 4.89543 3 6V18C3 19.1046 3.89543 20 5 20Z"/>
+            </svg>
+            <p class="text-gray-500 text-sm">
+                {% trans "Didn't receive the email?" %}
+                <a href="{% url 'account_email_verification_sent' %}" class="text-green-600 hover:underline">{% trans "Resend Verification Email" %}</a>
+            </p>
+        </div>
+    </div>
 </div>
 {% endblock content %}

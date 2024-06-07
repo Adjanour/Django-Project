@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     # Local
     "accounts.apps.AccountsConfig",
     "transcripts.apps.TranscriptsConfig",
-    "mypayments.apps.MypaymentsConfig",
+    "payments.apps.PaymentsConfig",
 ]
 
 MIDDLEWARE = [
@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'accounts.context_processors.user_profile_picture'
             ],
         },
     },
@@ -205,6 +206,5 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 DEFAULT_FROM_EMAIL = "admin@transcriptwise.com"
 
 
-HUBTEL_API_KEY = 'kcaliqtv'
-HUBTEL_API_SECRET = 'kzaxioop'
-
+PAYSTACK_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'
+PAYSTACK_SECRET_KEY = 'sk_test_2f27c0426bee37fc80d11158e714bf43a545612a'

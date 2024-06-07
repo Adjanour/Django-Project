@@ -4,14 +4,14 @@
         <!-- Input fields for step 2 -->
         <div class="flex flex-col">
           <label for="identification_number" class="text-gray-700 font-medium mb-2">Id Number</label>
-          <input type="text" id="identification_number" name="identification_number" placeholder="Enter Id number" value="{{form.identification_number.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+          <input type="text" id="identification_number" name="identification_number" required placeholder="Enter Id number" value="{{form.identification_number.value}}" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
           {% for error in form.identification_number.errors %}
               <p class="text-red-500 text-sm">{{ error }}</p>
           {% endfor %}
       </div>
       <div class="flex flex-col">
           <label for="identification_type" class="text-gray-700 font-medium mb-2">Id Type</label>
-          <select id="identification_type" name="identification_type" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
+          <select id="identification_type" required name="identification_type" class="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 mb-2">
           <option value="">Select Identification Type</option>
               {% for id_type in id_types %}
                   {% if form.identification_type.value == id_type.id %}
@@ -25,7 +25,7 @@
           {% endfor %}
       </div>
       <div class="flex flex-col">
-          <label for="identification_file" class="text-gray-700 font-medium mb-2">ID File</label>
+          <label for="identification_file"  class="text-gray-700 font-medium mb-2">ID File</label>
 
             <div id="file-container" class="flex flex-col items-center justify-center bg-white p-4 rounded-lg shadow-md">
               <div class="flex flex-row items-center justify-center bg-gray-200 rounded-lg p-4  w-full m-2">
@@ -34,7 +34,7 @@
                 </svg>
                 <p class="text-gray-500 text-sm mt-2">Drag and drop files here or click to select</p>
               </div>
-              <input type="file" class="hidden" id="file-upload"  value="{% if form.identification_file.url %}{{ form.identification_file.url }}{% endif %}" name="identification_file" />
+              <input  type="file" class="hidden" id="file-upload"  value="{% if form.identification_file.url %}{{ form.identification_file.url }}{% endif %}" name="identification_file" />
               <div id="file-preview" class="items-start justify-between w-full mb-2 hidden">
                 <div class="flex items-center">
                     <div class="bg-accent text-white rounded-full p-2 mr-2">

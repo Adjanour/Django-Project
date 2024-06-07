@@ -15,6 +15,9 @@ class IdentificationType(models.Model):
     short_name = models.CharField(max_length=15)
     created_on = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True)
+    
+    def __str__(self):
+        return self.name
 
 
 class Gender(models.Model):
@@ -48,15 +51,12 @@ class StudentProfile(models.Model):
     date_of_birth = models.DateField(default='1990-02-22')
     gender = models.ForeignKey(Gender, on_delete=models.PROTECT, null=True, blank=False)
     postal_address = models.CharField(max_length=255)
-    residential_address = models.CharField(max_length=255)
-    profile_image = models.ImageField(upload_to='profile_images/', blank=True)
-    student_id = models.CharField(max_length=20)
-    identification_file = models.FileField(upload_to='identification_documents/', blank=True)
+    residential_address = models.CharField(max_length=255,blank=False)
+    profile_image = models.ImageField(upload_to='profile_images/', blank=False)
+    identification_file = models.FileField(upload_to='identification_documents/', blank=False)
     identification_type = models.ForeignKey(IdentificationType, on_delete=models.PROTECT, null=True, blank=False)
     identification_number = models.CharField(max_length=30, blank=False, null=True)
     step = models.IntegerField(default=1)
-    graduation_year = models.DateField(blank=True, null=True)
-    verification_document = models.FileField(upload_to='verification_documents/', blank=True)
     verification_status = models.CharField(max_length=20, choices=(
         ('NOT SUBMITED','Not Submited'),
         ('PENDING', 'Pending'),

@@ -57,18 +57,36 @@ class StudentProfileForm(forms.ModelForm):
         model = StudentProfile
         fields = ('profile_image', 'first_name', 'last_name', 'other_names', 'email', 'gender', 'residential_address',
                   'postal_address', 'date_of_birth', 'phone_number')
+        
+    def __init__(self, *args, **kwargs):
+        super(StudentProfileForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.verification_status == 'PENDING':
+            for field in self.fields:
+                self.fields[field].disabled = True        
 
 
 class StudentProfileFormID(forms.ModelForm):
     class Meta:
         model = StudentProfile
         fields = ('identification_type', 'identification_number', 'identification_file')
+        
+        def __init__(self, *args, **kwargs):
+            super(StudentProfileFormID, self).__init__(*args, **kwargs)
+            if self.instance and self.instance.verification_status == 'PENDING':
+                for field in self.fields:
+                    self.fields[field].disabled = True
 
 
 class StudentProfileFormProgramme(forms.ModelForm):
     class Meta:
         model = CourseLog
         fields = ('index_number', 'full_name', 'graduate_type', 'programme', 'admission_year', 'graduation_year')
+        
+        def __init__(self, *args, **kwargs):
+            super(StudentProfileFormProgramme, self).__init__(*args, **kwargs)
+            if self.instance and self.instance.verification_status == 'PENDING':
+                for field in self.fields:
+                    self.fields[field].disabled = True
 
 
 class CourseLogForm(forms.ModelForm):

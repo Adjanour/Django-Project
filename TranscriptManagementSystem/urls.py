@@ -24,9 +24,8 @@ urlpatterns = [
     #User Mangement
     path("accounts/", include("allauth.urls")),
     #Payment
-    path("",include("mypayments.urls")),
+    path("",include("payments.urls")),
     # Local
     path("",include("transcripts.urls")),
     path("",include("accounts.urls")),
-    path("transcripts/",include("transcripts.urls")),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

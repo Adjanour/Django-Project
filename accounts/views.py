@@ -191,7 +191,14 @@ def profile(request, step=1):
             if result:
                 return result  # Redirect to profile view with updated step
         form = get_form(request.POST, request.FILES, step, profile)
+        
         if form.is_valid():
+            
+            if step == 2:
+                if 'identification_file' not in request.FILES and profile.identification_file:
+                    form.cleaned_data['identification_file'] = profile.identification_file
+                    print("Using existing identification file")
+                    
             form.save()
             profile.step = min(profile.step + 1, 4)  # Ensure step does not exceed 4
             profile.save()

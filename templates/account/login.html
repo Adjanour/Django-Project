@@ -1,49 +1,67 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block title %}Login{% endblock title %}
 
 {% block content %}
-<div class="mx-auto w-full p-4">
-    {% if form.errors %}
-    <div class="alert alert-danger">
-        <strong>Error!</strong> Please correct the following errors:
-        <ul>
-            {% for field, errors in form.errors.items %}
-            {% for error in errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-    <div class="bg-white rounded-md mx-auto w-fit h-fit py-6 px-6 mb-4 shadow-md">
-        <div class="mx-auto w-full flex">
-        <h1 class="text-2xl font-medium mb-4 mx-auto">Login </h1>
+<div class="min-h-screen p-6 flex flex-col items-center justify-center bg-cover bg-center" style="background-position:center;background-image: url('{% static "myapp/images/umat.jpg" %}');">
+   
+    <!-- Login Form Section -->
+    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
+        <div class="relative w-full max-w-md p-6">
+            <div class="text-center mb-4 mt-6">
+                <h1 class="text-4xl font-bold text-green-700 mb-2">Welcome</h1>
+                <p class="text-gray-600">Login to manage your transcripts easily!</p>
+            </div>
+            <!-- Login Form -->
+        
+            <form method="post" action="{% url 'account_login' %}" class="space-y-4">
+                {% csrf_token %}
+                <!-- Email Field -->
+                <div class="mb-4">
+                    <label for="id_login" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="text" name="login" id="id_login" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" required>
+                    <!-- error for login -->
+                    {% if form.login.errors %}
+                    <p class="text-red-600 text-sm">{{ form.login.errors.0 }}</p>
+                    {% endif %}
+
+                </div>
+                <!-- Password Field -->
+                <div class="mb-4">
+                    <label for="id_password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" name="password" id="id_password"class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" required>
+                    <!-- error for password -->
+                    {% if form.login.errors %}
+                    <p class="text-red-600 text-sm">{{ form.login.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <!-- Remember Me Checkbox -->
+                <div class="flex items-center justify-between" style="column-gap: 1rem;">
+                    <div class="flex items-center">
+                        <input id="remember_me" name="remember" type="checkbox" class="form-checkbox" checked>
+                        <label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+                    </div>
+                    <div class="flex items-center">
+                        <!-- Forgot password link -->
+                        <a href="{% url 'account_reset_password' %}" class="text-sm text-gray-700 text-center block">Forgot Password?</a>
+                    </div>
+                </div>
+                 <!-- General Form Errors -->
+                {% if form.non_field_errors %}
+                    <p class="text-red-600 text-sm">{{ form.non_field_errors.0 }}</p>
+                {% endif %}
+                <!-- Login Button -->
+                <button type="submit" class="w-full bg-green-600 text-white font-medium py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Login</button>
+                <div class="flex gap-x-2 w-full justify-center">
+                    <p class="text-center text-gray-700 text-sm mt-2">Don't have an account? <a href="{% url 'account_signup' %}" class="text-green-600 hover:text-green-700">Sign Up</a></p>
+                </div>
+            </form>
+            
         </div>
-        <form method="post" action="{% url 'account_login' %}" class="space-y-4">
-            {% csrf_token %}
-            <!-- Email Field -->
-            <div class="mb-4">
-                <label for="id_login" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="text" name="login" id="id_login" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                >
-            </div>
-            <!-- Password Field -->
-            <div class="mb-4">
-                <label for="id_password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" name="password" id="id_password" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-            </div>
-            <!-- Remember Me Checkbox -->
-            <div class="flex items-center">
-                <input id="remember_me" name="remember" type="checkbox" class="form-checkbox" checked>
-                <label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
-            </div>
-            <!-- Login Button -->
-            <button type="submit" class="w-full bg-indigo-500 text-white font-medium py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Login</button>
-        </form>
     </div>
-    <p class="text-center text-gray-500 text-xs">
-        &copy;2020 Transcript Wise. All rights reserved.
-      </p>
+    <p class="text-center text-white text-xs mt-4">
+                &copy;2024 Transcript Wise. All rights reserved.
+    </p>
 </div>
 {% endblock content %}

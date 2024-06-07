@@ -164,20 +164,109 @@ try {
       };
     }
 
-    closeModalBtn.onclick = function () {
-      modal.style.display = "none";
-    };
+    try {
+      if (closeModalBtn !== undefined && cancelBtn !== undefined) {
+        closeModalBtn.addEventListener("click", function () {
+          modal.style.display = "none";
+        });
 
-    cancelBtn.onclick = function () {
-      modal.style.display = "none";
-    };
-
-    window.onclick = function (event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
+        cancelBtn.addEventListener("click", function () {
+          modal.style.display = "none";
+        });
       }
-    };
+
+      window.addEventListener("click", function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
   });
 } catch (error) {
-  console.log(e);
+  console.error(error);
+}
+
+try {
+  /**
+   * Validates the input value.
+   * @param {string} value - The input value to be validated.
+   * @returns {boolean} - Returns true if the value is a valid number, otherwise false.
+   */
+  const validateInput = (value) => {
+    const newValue = +value;
+    return !isNaN(newValue) && newValue !== 0;
+  };
+
+  /**
+   * Formats the input value to match the GHA-XXXXXXXXX-X pattern.
+   * @param {string} value - The input value to be formatted.
+   * @returns {string} - The formatted value.
+   */
+  const ghCardFormat = (value) => {
+    // Ensure the value is trimmed and only takes the necessary part
+    value = value.replace(/[^\d]/g, "").slice(0, 10); // Only take the first 10 digits
+    return `GHA-${value.slice(0, 9)}-${value.slice(9)}`;
+  };
+
+  const input = document.getElementById("identification_number");
+  const type = document.getElementById("identification_type");
+
+  type.addEventListener("change", (e) => {
+    const value = e.target.value;
+    if (value == "1") {
+      type.value = "1";
+      input.placeholder = "GHA-XXXXXXXXX-X";
+      input.placeholder = "GHA-XXXXXXXXX-X";
+    input.addEventListener("keyup", (e) => {
+      const value = e.target.value;
+
+      if (validateInput(value.replace(/[^\d]/g, ""))) {
+        if (value.length <= 15) {
+          input.value = ghCardFormat(value.replace(/[^0-9]/g, ""));
+        } else {
+          e.preventDefault();
+          input.value = input.value.slice(0, 15);
+        }
+      } else if (value.startsWith("GHA-")) {
+        if (value.length === 13) {
+          const newValue = value.slice(0, 14) + "-" + value.slice(14);
+          input.value = newValue;
+        }
+      } else {
+        e.preventDefault();
+        input.value = "";
+      }
+    });
+    } else {
+      input.placeholder
+    }
+  })
+
+  if (type.value == "1") {
+    input.placeholder = "GHA-XXXXXXXXX-X";
+    input.addEventListener("keyup", (e) => {
+      const value = e.target.value;
+
+      if (validateInput(value.replace(/[^\d]/g, ""))) {
+        if (value.length <= 15) {
+          input.value = ghCardFormat(value.replace(/[^0-9]/g, ""));
+        } else {
+          e.preventDefault();
+          input.value = input.value.slice(0, 15);
+        }
+      } else if (value.startsWith("GHA-")) {
+        if (value.length === 13) {
+          const newValue = value.slice(0, 14) + "-" + value.slice(14);
+          input.value = newValue;
+        }
+      } else {
+        e.preventDefault();
+        input.value = "";
+      }
+    });
+  }
+} catch (error) {
+  console.error(error);
 }

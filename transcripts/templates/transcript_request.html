@@ -1,0 +1,38 @@
+<!-- templates/transcript_request.html -->
+{% extends "base_layout.html" %}
+
+{% block title %}Request Transcript{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-6">Request Transcript</h1>
+    <form id="transcript-form" action="{% url 'request_transcript' %}" method="post" class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div id="total-cost" class="text-gray-700 font-medium">Total Cost: 0</div>
+        <button type="button" id="submit-request" class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-700">Submit Request</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const numberOfCopiesInput = document.querySelector('input[name="number_of_transcripts"]');
+        const totalCostField = document.getElementById('total-cost');
+        const submitRequestButton = document.getElementById('submit-request');
+        const form = document.getElementById('transcript-form');
+        const costPerCopy = 10;
+
+        numberOfCopiesInput.addEventListener('input', function() {
+            const numberOfCopies = parseInt(this.value) || 0;
+            const totalCost = numberOfCopies * costPerCopy;
+            totalCostField.textContent = `Total Cost: ${totalCost}`;
+        });
+
+        submitRequestButton.addEventListener('click', function() {
+            form.submit();
+        });
+    });
+</script>
+{% endblock %}

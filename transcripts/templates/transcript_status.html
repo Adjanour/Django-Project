@@ -1,0 +1,37 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Transcript Status{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center bg-gray-100 p-4  max-h-fit">
+    <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold text-green-700 mb-6 text-center">Transcript Status</h1>
+
+        {% if transcript_requests %}
+            <div class="space-y-4">
+                {% for request in transcript_requests %}
+                    <div class="bg-gray-100 rounded-lg p-4 shadow-md">
+                        <p class="text-lg font-semibold">Request Date: {{ request.created_at|date:"F j, Y, g:i a" }}</p>
+                        <p class="text-gray-700">Status: 
+                            {% if request.status == 'pending' %}
+                                <span class="text-yellow-500 font-semibold">Pending</span>
+                            {% elif request.status == 'processing' %}
+                                <span class="text-blue-500 font-semibold">Processing</span>
+                            {% elif request.status == 'completed' %}
+                                <span class="text-green-500 font-semibold">Completed</span>
+                            {% else %}
+                                <span class="text-red-500 font-semibold">Unknown</span>
+                            {% endif %}
+                        </p>
+                        {% if request.remarks %}
+                            <p class="text-gray-700 mt-2">Remarks: {{ request.remarks }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-700 text-center">You have no transcript requests.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

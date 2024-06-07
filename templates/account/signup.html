@@ -1,88 +1,61 @@
-{% extends "layout.html" %} 
-{% block title %}Signup{% endblock title %} 
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Signup{% endblock title %}
+
 {% block content %}
+<div class="min-h-screen p-6 flex flex-col items-center justify-center bg-cover bg-center" style="background-position:center;background-image: url('{% static "myapp/images/umat.jpg" %}');">
+    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
+        <div class="text-center mb-4 mt-6">
+            <h1 class="text-4xl font-bold text-green-700 mb-2">Create Account</h1>
+            <p class="text-gray-600">Join us and manage your transcripts easily!</p>
+        </div>
 
-<div class="mx-auto w-full p-4">
-  {% if form.errors %}
-  <div class="alert alert-danger">
-    <strong>Error!</strong> Please correct the following errors:
-    <ul>
-      {% for field, errors in form.errors.items %} 
-        {% for error in errors %}
-        <li>{{ error }}</li>
-        {% endfor %} 
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
-  
+        <form method="post" action="{% url 'account_signup' %}" class=" w-full p-4 px-4 space-y-4">
+            {% csrf_token %}
+            <!-- Email Field -->
+            <div>
+                <label for="id_email" class="block text-gray-700 font-medium">Email</label>
+                <input type="email" name="email" id="id_email" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Enter your email address" required>
+                 {% if form.email.errors %}
+                    <p class="text-red-600 text-sm">{{ form.email.errors.0 }}</p>
+                {% endif %}
+            </div>
 
-  
-  <div class="bg-white rounded-md mx-auto w-fit h-fit py-6 px-6 mb-4 shadow-md">
-    <div class="mx-auto w-full flex">
-      <h1 class="text-2xl font-medium mb-4 mx-auto">Sign Up</h1>
-    </div>
+            <!-- Password Field -->
+            <div>
+                <label for="id_password1" class="block text-gray-700 font-medium">Password</label>
+                <input type="password" name="password1" id="id_password1" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Enter a secure password" required>
+                {% if form.password1.errors %}
+                    <p class="text-red-600 text-sm">{{ form.password1.errors.0 }}</p>
+                {% endif %}
+            </div>
 
-    <form method="post" action="{% url 'account_signup' %}" class="w-full">
-      {% csrf_token %}
-      <!-- Email Field -->
-      <div class="mb-4">
-        <label for="id_email" class="block text-gray-700 font-bold mb-2"
-          >Email</label
-        >
-        <input
-          type="email"
-          name="email"
-          id="id_email"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          placeholder="Enter your email address"
-          />
-      </div>
-      <!-- Password Field -->
-      <div class="mb-4">
-        <label
-          for="id_password1"
-          class="block text-gray-700 font-bold mb-2"
-          >Password</label
-        >
-        <input
-          type="password"
-          name="password1"
-          id="id_password1"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          placeholder="Enter a secure password"
-          />
-      </div>
-      <!-- Confirm Password Field -->
-      <div class="mb-6">
-        <label
-          for="id_password2"
-          class="block text-gray-700 font-bold mb-2"
-          >Confirm Password</label
-        >
-        <input
-          type="password"
-          name="password2"
-          id="id_password2"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          placeholder="Confirm your password"
-          />
-      </div>
-      <!-- Signup Button -->
-      <button
-        type="submit"
-        class="w-full bg-indigo-500 text-white font-medium py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
-      >
-        Sign Up
-      </button>
-      <p class="text-center text-gray-500 text-s mt-3">
-        Already have an account? <a href="{% url 'account_login' %}">Login</a>
+            <!-- Confirm Password Field -->
+            <div>
+                <label for="id_password2" class="block text-gray-700 font-medium">Confirm Password</label>
+                <input type="password" name="password2" id="id_password2" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Confirm your password" required>
+                {% if form.password2.errors %}
+                    <p class="text-red-600 text-sm">{{ form.password2.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+             <!-- General Form Errors -->
+            {% if form.non_field_errors %}
+                <p class="text-red-600 text-sm">{{ form.non_field_errors.0 }}</p>
+            {% endif %}
+
+            <!-- Signup Button -->
+            <button type="submit" class="w-full py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Sign Up</button>
+        </form>
+
+        <p class="text-center text-gray-600 text-sm mt-2 mb-4">
+            Already have an account? <a href="{% url 'account_login' %}" class="text-green-600 hover:underline">Login</a>
         </p>
-    </form>
+        
   </div>
-
-  <p class="text-center text-gray-500 text-xs">
-    &copy;2020 Transcript Wise. All rights reserved.
+  <p class="text-center text-xs text-white mt-6">
+    &copy;2024 Transcript Wise. All rights reserved.
   </p>
 </div>
 {% endblock content %}
