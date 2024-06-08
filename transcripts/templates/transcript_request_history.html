@@ -1,47 +1,114 @@
-{% extends 'base_layout.html' %} 
-{% block title %}Transcript Request History{% endblock %} 
+{% extends 'base_layout.html' %}
+
+{% block title %}Transcript Request History{% endblock %}
+
 {% block content %}
 <div class="container mx-auto py-8">
   <h1 class="text-3xl font-bold mb-6 text-center">Transcript Request History</h1>
+  <div class="w-full flex justify-end mb-4 mt-2">
+    <select id="view" class="p-4 rounded-md w-32  focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-md text-sm">
+      <option value="1">Card View</option>
+      <option value="2">Table View</option>
+    </select>
+  </div>
   {% if transcript_requests %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div id="card-view" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       {% for request in transcript_requests %}
-        <div class="bg-white w-full shadow-md rounded-md p-6">
-          <div class="mb-4 w-full flex  ">
+        <div class="bg-white shadow-md  rounded-md p-6 flex flex-col ">
+          <div class="mb-4 flex " style="column-gap: 1rem;">
             <p class="font-semibold text-gray-800">Name:</p>
-            <p class="text-gray-700">{{ request.profile.first_name }} {{ request.profile.last_name }}</p>
+            <p class="text-gray-700" style="font-size: 0.9rem;">{{ request.profile.first_name }} {{ request.profile.last_name }}</p>
           </div>
-          <div class="mb-4">
+          <div class="mb-4 flex " style="column-gap: 1rem;">
             <p class="font-semibold text-gray-800">Transcript Type:</p>
-            <p class="text-gray-700">{{ request.transcript_type }}</p>
+            <p class="text-gray-700" style="font-size: 0.9rem;">{{ request.transcript_type }}</p>
           </div>
-          <div class="mb-4">
+          <div class="mb-4 flex " style="column-gap: 1rem;">
             <p class="font-semibold text-gray-800">Status:</p>
-            <p class="text-gray-700">{{ request.status }}</p>
+            <p class="text-gray-700" style="font-size: 0.9rem;">{{ request.status }}</p>
           </div>
-          <div class="mb-4">
+          <div class="mb-4 flex " style="column-gap: 1rem;">
             <p class="font-semibold text-gray-800">Date:</p>
-            <p class="text-gray-700">{{ request.created_at }}</p>
+            <p class="text-gray-700" style="font-size: 0.9rem;">{{ request.created_at }}</p>
           </div>
-          <div class="mb-4">
+          <div class="mb-4 flex " style="column-gap: 1rem;">
             <p class="font-semibold text-gray-800">Amount:</p>
-            <p class="text-gray-700">{{ request.total_cost }}</p>
+            <p class="text-gray-700" style="font-size: 0.9rem;">{{ request.total_cost }}</p>
           </div>
-          <div class="mb-4">
+          <div class="mb-4 flex " style="column-gap: 1rem;">
             <p class="font-semibold text-gray-800">Payment Status:</p>
-            <p class="text-gray-700">{{ request.status }}</p>
+          <p class="text-gray-700" style="font-size: 0.9rem;">{{ request.payment_status }}</p> <!-- Assuming a separate payment_status field -->
           </div>
-          <div class="flex justify-between">
-            <a href="{% url 'edit_transcript' request.id %}" class="bg-blue-500 hover:bg-blue-600 text-white rounded-md p-2">View</a>
-            <a href="#" class="bg-red-500 hover:bg-red-700 text-white rounded-md p-2 btn btn-red">Cancel</a>
-            <a href="{% url 'initiate_payment' request.id %}" class="bg-green-500 hover:bg-green-700 text-white rounded-md p-2">Pay</a>
+          <div class="flex " style="column-gap: 0.5rem;">
+            <a href="{% url 'edit_transcript' request.id %}" class="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2">View</a>
+            <a href="#" class="bg-red-500 hover:bg-red-700 text-white rounded-md px-4 py-2">Cancel</a>
           </div>
         </div>
       {% endfor %}
     </div>
-    {% else %}
-      <p class="text-gray-700 text-center">You have no transcript requests.</p>
-    {% endif %}
-  </div>
+    <div class="hidden" id="table-view">
+       <div class="overflow-x-auto">
+      <table class="min-w-full bg-white shadow-md rounded-md">
+        <thead class="bg-gray-100 border-b">
+          <tr>
+            <th class="text-left py-3 px-4 font-semibold text-gray-800">Name</th>
+            <th class="text-left py-3 px-4 font-semibold text-gray-800">Transcript Type</th>
+            <th class="text-left py-3 px-4 font-semibold text-gray-800">Status</th>
+            <th class="text-left py-3 px-4 font-semibold text-gray-800">Date</th>
+            <th class="text-left py-3 px-4 font-semibold text-gray-800">Amount</th>
+            <th class="text-left py-3 px-4 font-semibold text-gray-800">Payment Status</th>
+            <th class="text-left py-3 px-4 font-semibold text-gray-800">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for request in transcript_requests %}
+            <tr class="border-b">
+              <td class="py-3 px-4 text-gray-700">{{ request.profile.first_name }} {{ request.profile.last_name }}</td>
+              <td class="py-3 px-4 text-gray-700">{{ request.transcript_type }}</td>
+              <td class="py-3 px-4 text-gray-700">{{ request.status }}</td>
+              <td class="py-3 px-4 text-gray-700">{{ request.created_at }}</td>
+              <td class="py-3 px-4 text-gray-700">{{ request.total_cost }}</td>
+              <td class="py-3 px-4 text-gray-700">{{ request.payment_status }}</td>
+              <td class="py-3 px-4 flex space-x-2" style="column-gap: 0.5rem;">
+                <a href="{% url 'edit_transcript' request.id %}" class="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2">View</a>
+                <a href="#" class="bg-red-500 hover:bg-red-700 text-white rounded-md px-4 py-2">Cancel</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    </div>
+    
+  {% else %}
+    <p class="text-gray-700 text-center">You have no transcript requests.</p>
+  {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+  const select = document.getElementById("view")
+  const cardView = document.getElementById("card-view")
+  const tableView = document.getElementById("table-view")
+
+  if(select){
+    select.addEventListener("change",(e)=>{
+      if(e.target.value == "1")
+      {
+        tableView.classList.add("hidden")
+        cardView.classList.remove("hidden")
+        cardView.classList.add("flex")
+      }
+      else{
+        cardView.classList.add("hidden")
+        tableView.classList.remove("hidden")
+        tableView.classList.add("flex")
+      }
+    })
+  }
+
+</script>
+
 {% endblock %}

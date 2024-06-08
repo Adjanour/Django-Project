@@ -49,7 +49,8 @@ def payment_callback_view(request):
             transcript_request_id = int(reference.split('_')[1])
             transcript_request = get_object_or_404(TranscriptRequest, id=transcript_request_id)
             if response_data['data']['amount'] == int(transcript_request.total_cost * 100):
-                transcript_request.status = 'PAID'
+                transcript_request.payment_status = 'PAID'
+                transcript_request.status = 'PROCESSING'
             transcript_request.save()
             return render(request, 'payment_success.html', {'transcript_request': transcript_request})
         else:

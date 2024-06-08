@@ -5,12 +5,15 @@
 
 {% block content %}
 <div class="max-w-lg mx-auto py-8">
-    <h1 class="text-2xl font-bold mb-6">Request Transcript</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center">Request Transcript</h1>
     <form id="transcript-form" action="{% url 'request_transcript' %}" method="post" class="space-y-4">
         {% csrf_token %}
         {{ form.as_p }}
         <div id="total-cost" class="text-gray-700 font-medium">Total Cost: 0</div>
-        <button type="button" id="submit-request" class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-700">Submit Request</button>
+        <div class="flex justify-between">        
+            <button type="button" id="submit-request"  class="bg-green-600 text-white font-medium py-2 px-4 rounded hover:bg-green-700">Re-Submit Request</button>
+        <a href="{% url 'transcript_request_history' %}" type="button" class="bg-gray-500 text-white font-medium py-2 px-4 rounded-md hover:bg-gray-600">Back</a>
+        </div>
     </form>
 </div>
 {% endblock %}
@@ -24,11 +27,15 @@
         const form = document.getElementById('transcript-form');
         const costPerCopy = 10;
 
-        numberOfCopiesInput.addEventListener('input', function() {
-            const numberOfCopies = parseInt(this.value) || 0;
+        function updateTotalCost() {
+            const numberOfCopies = parseInt(numberOfCopiesInput.value) || 0;
             const totalCost = numberOfCopies * costPerCopy;
             totalCostField.textContent = `Total Cost: ${totalCost}`;
-        });
+        }
+
+        if (numberOfCopiesInput) {
+            numberOfCopiesInput.addEventListener('input', updateTotalCost);
+        }
 
         submitRequestButton.addEventListener('click', function() {
             form.submit();

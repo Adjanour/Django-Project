@@ -44,10 +44,13 @@
               </div>
             </div>
             <div class="hidden sm:ml-6 sm:flex sm:items-center">
+              <a href="{% url 'notifications' %}">
+                
               <button
                 aria-label="Notifications"
                 class="p-1 border-2 border-transparent text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition duration-150 ease-in-out"
               >
+              <span class="text-sm flex bg-gray-500 text-white rounded-full justify-center opacity-70 position  right-0">{{notfications_count}}0</span>
                 <svg
                   class="h-6 w-6"
                   fill="none"
@@ -61,7 +64,9 @@
                     stroke-width="2"
                   ></path>
                 </svg>
+                
               </button>
+              </a>
               <div class="ml-3 relative w-fit">
                 <div>
                   <button

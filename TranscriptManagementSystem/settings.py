@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "transcripts.apps.TranscriptsConfig",
     "payments.apps.PaymentsConfig",
+    "notifications.apps.NotificationsConfig",
 ]
 
 MIDDLEWARE = [
@@ -73,7 +74,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'accounts.context_processors.user_profile_picture'
+                'accounts.context_processors.user_profile_picture',
+                'accounts.context_processors.user_notifications_count',
             ],
         },
     },
@@ -181,7 +183,7 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 
 # django-allauth config
 LOGIN_REDIRECT_URL = "/accounts/profile"
-ACCOUNT_LOGOUT_REDIRECT = "/"
+ACCOUNT_LOGOUT_REDIRECT = "/accounts/login"
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",

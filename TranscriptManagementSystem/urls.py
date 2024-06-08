@@ -28,4 +28,5 @@ urlpatterns = [
     # Local
     path("",include("transcripts.urls")),
     path("",include("accounts.urls")),
+    path("notifications/",include("notifications.urls")),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

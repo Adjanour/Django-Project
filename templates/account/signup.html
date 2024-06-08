@@ -16,7 +16,7 @@
             <!-- Email Field -->
             <div>
                 <label for="id_email" class="block text-gray-700 font-medium">Email</label>
-                <input type="email" name="email" id="id_email" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Enter your email address" required>
+                <input type="email" name="email" id="id_email" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="Enter your email address" required>
                  {% if form.email.errors %}
                     <p class="text-red-600 text-sm">{{ form.email.errors.0 }}</p>
                 {% endif %}
@@ -25,7 +25,7 @@
             <!-- Password Field -->
             <div>
                 <label for="id_password1" class="block text-gray-700 font-medium">Password</label>
-                <input type="password" name="password1" id="id_password1" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Enter a secure password" required>
+                <input type="password" name="password1" id="id_password1" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="Enter a secure password" required>
                 {% if form.password1.errors %}
                     <p class="text-red-600 text-sm">{{ form.password1.errors.0 }}</p>
                 {% endif %}

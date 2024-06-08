@@ -1,37 +1,48 @@
 {% extends "base_layout.html" %}
-
-{% block title %}Transcript Status{% endblock %}
+{%block title %}Transcript Request Status{% endblock %}
 
 {% block content %}
-<div class="flex items-center justify-center bg-gray-100 p-4  max-h-fit">
-    <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-2xl mx-auto">
-        <h1 class="text-3xl font-bold text-green-700 mb-6 text-center">Transcript Status</h1>
-
-        {% if transcript_requests %}
-            <div class="space-y-4">
-                {% for request in transcript_requests %}
-                    <div class="bg-gray-100 rounded-lg p-4 shadow-md">
-                        <p class="text-lg font-semibold">Request Date: {{ request.created_at|date:"F j, Y, g:i a" }}</p>
-                        <p class="text-gray-700">Status: 
-                            {% if request.status == 'pending' %}
-                                <span class="text-yellow-500 font-semibold">Pending</span>
-                            {% elif request.status == 'processing' %}
-                                <span class="text-blue-500 font-semibold">Processing</span>
-                            {% elif request.status == 'completed' %}
-                                <span class="text-green-500 font-semibold">Completed</span>
-                            {% else %}
-                                <span class="text-red-500 font-semibold">Unknown</span>
-                            {% endif %}
-                        </p>
-                        {% if request.remarks %}
-                            <p class="text-gray-700 mt-2">Remarks: {{ request.remarks }}</p>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="text-gray-700 text-center">You have no transcript requests.</p>
-        {% endif %}
+{% if transcript_requests %}
+{% for transcript_request in transcript_requests %}
+<div class="flex flex-col mb-4 md:flex-row justify-between items-center bg-white rounded-lg shadow-md p-6">
+  <div class="flex items-center mb-4 md:mb-0">
+    <div class="bg-green-600 h-32 w-0.5 text-white rounded-full  p-3 mr-4">
+      
     </div>
+    <div>
+      <h3 class="text-lg font-semibold text-secondary">Transcript Request</h3>
+      <p class="text-gray-600 text-sm">{{transcript_request.total_cost}}</p>
+      <p class="text-gray-600 text-sm">{{transcript_request.transcript_type}}</p>
+      <p class="text-gray-600 text-sm">{{transcript_request.created_at|date:"M d,y"}}</p>
+    </div>
+  </div>
+  <div class="flex items-center">
+    <div class="flex">
+      <div class="flex items-center mr-4">
+        <div class="bg-green-100 text-green-800 rounded-full px-3 py-1 mr-2">
+          <span class="font-semibold">1</span>
+        </div>
+        <p class="text-gray-600">Request Submitted</p>
+      </div>
+      <div class="flex items-center mr-4">
+        <div class="bg-yellow-100 text-yellow-800 rounded-full px-3 py-1 mr-2">
+          <span class="font-semibold">2</span>
+        </div>
+        <p class="text-gray-600">Processing</p>
+      </div>
+      <div class="flex items-center">
+        <div class="bg-gray-100 text-gray-800 rounded-full px-3 py-1 mr-2">
+          <span class="font-semibold">3</span>
+        </div>
+        <p class="text-gray-600">Ready for Download</p>
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock %}
+{% endfor %}
+{% else %}
+<div class="flex flex-col items-center justify-center h-96">
+  <p class="text-gray-600">No transcript requests found</p>
+</div>
+{% endif %}
+{% endblock %} 
