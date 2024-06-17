@@ -71,7 +71,7 @@ def handle_course_log_forms(request, profile):
         HttpResponseRedirect: Redirects to the profile view with the updated step
                               if successful, otherwise returns None.
     """
-    if request.method != 'POST':
+    if request.method != "POST":
         return None
 
     # Initialize an empty list to store cleaned data from valid forms
@@ -83,8 +83,8 @@ def handle_course_log_forms(request, profile):
     # Extract form prefixes
     prefixes = set()
     for key in request.POST.keys():
-        if '-' in key:
-            prefix = key.split('-')[0] + key.split('-')[1]
+        if "-" in key:
+            prefix = key.split("-")[0] + key.split("-")[1]
             prefixes.add(prefix)
 
     length = len(prefixes)
@@ -93,34 +93,36 @@ def handle_course_log_forms(request, profile):
 
     for form_number in range(1, length + 1):
         form_data = {}
-        prefix = f'form-{form_number}'
+        prefix = f"form-{form_number}"
 
         for field_name in temp_form.fields.keys():
-            key = f'{prefix}-{field_name}'
+            key = f"{prefix}-{field_name}"
             if key in request.POST:
                 form_data[field_name] = request.POST[key]
 
-        instance_id_key = f'{prefix}-id'
+        instance_id_key = f"{prefix}-id"
         if instance_id_key in request.POST:
             try:
-                instance = CourseLog.objects.get(id=request.POST[instance_id_key], profile=profile)
+                instance = CourseLog.objects.get(
+                    id=request.POST[instance_id_key], profile=profile
+                )
             except CourseLog.DoesNotExist:
                 instance = None
         else:
             instance = None
 
         try:
-            if form_data['index_number'] and form_data['full_name']:
-                data.append(form_data['index_number'])
-                data.append(form_data['full_name'])
+            if form_data["index_number"] and form_data["full_name"]:
+                data.append(form_data["index_number"])
+                data.append(form_data["full_name"])
         except KeyError:
             pass
 
         form = CourseLogForm(data=form_data, instance=instance)
         # add index_number and full_name to form
         print(form.data)
-        form.data['index_number'] = data[0]
-        form.data['full_name'] = data[1]
+        form.data["index_number"] = data[0]
+        form.data["full_name"] = data[1]
 
         if form.is_valid():
             cleaned_data = form.save(commit=False)
@@ -134,7 +136,7 @@ def handle_course_log_forms(request, profile):
     profile.step = 4
     profile.save()
 
-    return redirect('profile', step=profile.step)
+    return redirect("profile", step=profile.step)
 
 
 def get_form(post, files, step, profile):
@@ -167,6 +169,6 @@ def get_form_get(step, profile):
 
 def get_step_info(steps, profile_step):
     for step in steps:
-        step['completed'] = step['number'] <= profile_step
-        step['current'] = step['number'] == profile_step
+        step["completed"] = step["number"] <= profile_step
+        step["current"] = step["number"] == profile_step
     return steps
