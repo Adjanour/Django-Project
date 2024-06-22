@@ -6,7 +6,7 @@
 {% block content %}
 <div class="max-w-lg mx-auto py-8 px-4 rounded-md ">
     <h1 class="text-1xl sm:text-2xl md:text-2xl lg:text-2xl font-bold mb-6">Request Transcript</h1>
-    <form id="transcript-form" action="{% url 'request_transcript' %}" method="post" class="space-y-4">
+    <form id="transcript-form" action="{% url 'edit_transcript' transcript_request.id %}" method="post" class="space-y-4">
         {% csrf_token %}
         {{ form.as_p }}
         <div style="column-gap: 0.5rem;" class="flex flex-1 gap-x-2">

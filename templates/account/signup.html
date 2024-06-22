@@ -5,7 +5,9 @@
 
 {% block content %}
 <div class="min-h-screen p-6 flex flex-col items-center justify-center bg-cover bg-center" style="background-position:center;background-image: url('{% static "myapp/images/umat.jpg" %}');">
-    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
+{#add background overlay#}
+<div style="background-color: rgba(0,0,0,0.4)" class=" h-full w-full fixed top-0 bottom-0 left-0 right-0 z-10"></div>
+    <div class="bg-white bg-opacity-85 rounded-lg z-50 shadow-lg p-4 w-full max-w-md mx-auto">
         <div class="text-center mb-4 mt-6">
             <h1 class="text-4xl font-bold text-green-700 mb-2">Create Account</h1>
             <p class="text-gray-600">Join us and manage your transcripts easily!</p>
@@ -34,7 +36,7 @@
             <!-- Confirm Password Field -->
             <div>
                 <label for="id_password2" class="block text-gray-700 font-medium">Confirm Password</label>
-                <input type="password" name="password2" id="id_password2" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Confirm your password" required>
+                <input type="password" name="password2" id="id_password2" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="Confirm your password" required>
                 {% if form.password2.errors %}
                     <p class="text-red-600 text-sm">{{ form.password2.errors.0 }}</p>
                 {% endif %}
@@ -46,15 +48,15 @@
             {% endif %}
 
             <!-- Signup Button -->
-            <button type="submit" class="w-full py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Sign Up</button>
+            <button type="submit" class="w-full mb-2 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Sign Up</button>
         </form>
 
-        <p class="text-center text-gray-600 text-sm mt-2 mb-4">
+        <p class="text-center text-gray-700 text-sm mt-2 mb-4">
             Already have an account? <a href="{% url 'account_login' %}" class="text-green-600 hover:underline">Login</a>
         </p>
         
   </div>
-  <p class="text-center text-xs text-white mt-6">
+  <p class="text-center text-sm z-50 text-white mt-6">
     &copy;2024 Transcript Wise. All rights reserved.
   </p>
 </div>

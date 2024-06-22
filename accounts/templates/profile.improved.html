@@ -29,7 +29,7 @@
                          class="relative w-12 h-12 sm:w-14 md:w-16 sm:h-14 md:h-16 lg:w-16 lg:h-16 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group hover:border-accent bg-accent hover:bg-accent-dark transition duration-150 ease-in-out progress-circle {% if step.completed %}completed{% elif step.current %}current{% endif %}">
                           <span class="text-white">{{ step.number }}</span>
                       </a>
-                      <span style="font-size: 0.9rem" class="mb-4 text-md font-small  sm:font-medium md:font-medium lg:font-medium text-gray-500">{{ step.name }}</span>
+                      <span style="font-size: 0.9rem" class="mb-4 text-md font-small progress-text  sm:font-medium md:font-medium lg:font-medium text-gray-500">{{ step.name }}</span>
                   </span>
                   <span style="left:60px" class="absolute inset-0 w-full flex items-center line" aria-hidden="true">
                       <div class="h-0.5 w-full mb-6 bg-gray-200"></div>

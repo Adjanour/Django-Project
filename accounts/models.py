@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
+
 class CustomUser(AbstractUser):
     # add additional fields in here
     # profile = models.OneToOneField('StudentProfile', on_delete=models.CASCADE, null=True, blank=True)
@@ -11,7 +12,7 @@ class CustomUser(AbstractUser):
 
 
 class IdentificationType(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30,unique=True)
     short_name = models.CharField(max_length=15)
     created_on = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True)
@@ -21,24 +22,51 @@ class IdentificationType(models.Model):
 
 
 class Gender(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30,unique=True,blank=False)
     short_name = models.CharField(max_length=15)
     created_on = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True)
-
+    
+    def __str__(self):
+        return self.name
 
 class Programme(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,unique=True,blank=False)
     short_name = models.CharField(max_length=15)
     created_on = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True)
 
-
+    def __str__(self):
+        return self.name
+    
 class GraduateType(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,unique=True,blank=False)
     short_name = models.CharField(max_length=15)
     created_on = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True)
+    
+    def __str__(self):
+        return self.name
+    
+class TranscriptType(models.Model):
+    name = models.CharField(max_length=100,unique=True,blank=False)
+    short_name = models.CharField(max_length=15)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_on = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+class DeliveryOption(models.Model):
+    name = models.CharField(max_length=100,unique=True,blank=False)
+    short_name = models.CharField(max_length=15)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_on = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class StudentProfile(models.Model):
@@ -63,6 +91,7 @@ class StudentProfile(models.Model):
         ('VERIFIED', 'Verified'),
         ('REJECTED', 'Rejected'),
     ), default='NOT SUBMITED')
+    is_verified = models.BooleanField(default=False)
 
 
 class CourseLog(models.Model):

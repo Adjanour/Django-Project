@@ -5,9 +5,9 @@
 
 {% block content %}
 <div class="min-h-screen p-6 flex flex-col items-center justify-center bg-cover bg-center" style="background-position:center;background-image: url('{% static "myapp/images/umat.jpg" %}');">
-   
+   <div style="background-color: rgba(0,0,0,0.4)" class=" h-full w-full fixed top-0 bottom-0 left-0 right-0 z-10"></div>
     <!-- Login Form Section -->
-    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
+    <div class="bg-white bg-opacity-85 z-50 rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
         <div class="relative w-full max-w-md p-6">
             <div class="text-center mb-4 mt-6">
                 <h1 class="text-4xl font-bold text-green-700 mb-2">Welcome</h1>
@@ -15,7 +15,7 @@
             </div>
             <!-- Login Form -->
         
-            <form method="post" action="{% url 'account_login' %}" class="space-y-4">
+            <form method="post" action="{% url 'account_login' %}" class=" mb-2 space-y-4">
                 {% csrf_token %}
                 <!-- Email Field -->
                 <div class="mb-4">
@@ -52,7 +52,7 @@
                     <p class="text-red-600 text-sm">{{ form.non_field_errors.0 }}</p>
                 {% endif %}
                 <!-- Login Button -->
-                <button type="submit" class="w-full bg-green-600 text-white font-medium py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Login</button>
+                <button type="submit" class="w-full  bg-green-600 text-white font-medium py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Login</button>
                 <div class="flex gap-x-2 w-full justify-center">
                     <p class="text-center text-gray-700 text-sm mt-2">Don't have an account? <a href="{% url 'account_signup' %}" class="text-green-600 hover:text-green-700">Sign Up</a></p>
                 </div>
@@ -60,7 +60,7 @@
             
         </div>
     </div>
-    <p class="text-center text-white text-xs mt-4">
+    <p class="text-center text-white text-sm z-50 mt-4">
                 &copy;2024 Transcript Wise. All rights reserved.
     </p>
 </div>

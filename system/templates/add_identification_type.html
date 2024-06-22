@@ -1,0 +1,14 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Add Transcript Type{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-6">Add Transcript Type</h1>
+    <form action="{% url 'add_identification_type' %}" method="post" class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-green-600 text-white font-medium py-2 px-4 rounded hover:bg-green-700">Add Identification Type</button>
+    </form>
+</div>
+{% endblock %}

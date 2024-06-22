@@ -1,0 +1,14 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Add Graduate Type{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-6">Add Graduate Type</h1>
+    <form action="{% url 'add_graduate_type' %}" method="post" class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-green-600 text-white font-medium py-2 px-4 rounded hover:bg-green-700">Add Graduate Type</button>
+    </form>
+</div>
+{% endblock %}

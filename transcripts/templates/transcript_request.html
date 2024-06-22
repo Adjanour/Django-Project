@@ -11,21 +11,54 @@
         {{ form.as_p }}
         <div id="total-cost" class="text-gray-700 font-medium">Total Cost: 0</div>
         <div class="flex justify-between">        
-            <button type="button" id="submit-request"  class="bg-green-600 text-white font-medium py-2 px-4 rounded hover:bg-green-700">Re-Submit Request</button>
+            <button type="button" id="submit-request"  class="bg-green-600 text-white font-medium py-2 px-4 rounded hover:bg-green-700">Submit Request</button>
         <a href="{% url 'transcript_request_history' %}" type="button" class="bg-gray-500 text-white font-medium py-2 px-4 rounded-md hover:bg-gray-600">Back</a>
+        </div>
+        <div class="hidded">
+            {{ delivery_options|json_script:"delivery-data" }}
+            {{ transcript_types|json_script:"transcript-types" }}
         </div>
     </form>
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script>
+<script defer>
+    // function to determin price to be paid from json data
+    
     document.addEventListener('DOMContentLoaded', function() {
+        const costPerCopyFunc = (transcriptType, deliveryOption,deliveryOptions,transcriptTypes) => {
+
+            const deliveryOptionData = deliveryOptions.filter(option => option.id === +deliveryOption)[0]
+            const transcriptTypeData = transcriptTypes.filter(type => type.id === +transcriptType)[0]
+            if (!transcriptTypeData || !deliveryOptionData) {
+                return 0;
+            }
+            return Number(transcriptTypeData.price) + Number(deliveryOptionData.price);
+
+    }
         const numberOfCopiesInput = document.querySelector('input[name="number_of_transcripts"]');
         const totalCostField = document.getElementById('total-cost');
         const submitRequestButton = document.getElementById('submit-request');
         const form = document.getElementById('transcript-form');
-        const costPerCopy = 10;
+        const deliveryOption = document.getElementById('id_delivery_option');
+        const transcriptType = document.getElementById('id_transcript_type');
+        const deliveryOptions = JSON.parse(document.getElementById('delivery-data').textContent);
+        const transcriptTypes = JSON.parse(document.getElementById('transcript-types').textContent);
+
+       
+        let costPerCopy = 0
+
+        document.getElementById('id_transcript_type').addEventListener('change', function() {
+            costPerCopy = costPerCopyFunc(transcriptType.value, deliveryOption.value,deliveryOptions,transcriptTypes);
+            updateTotalCost();
+           
+        });
+
+        document.getElementById('id_delivery_option').addEventListener('change', function() {
+            costPerCopy = costPerCopyFunc(transcriptType.value, deliveryOption.value,deliveryOptions,transcriptTypes);
+            updateTotalCost();
+        });
 
         function updateTotalCost() {
             const numberOfCopies = parseInt(numberOfCopiesInput.value) || 0;

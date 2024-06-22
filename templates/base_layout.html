@@ -29,28 +29,41 @@
               </div>
               <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                 <a
-                  class="inline-flex items-center px-1 pt-1 border-b-2 border-accent text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-accent transition duration-150 ease-in-out"
+                  class="{% if current_url == '/' %}text-gray-900{% else %}text-gray-400 border-transparent {% endif %} inline-flex items-center px-1 pt-1 border-b-2  text-sm font-medium leading-5 focus:outline-none focus:border-accent transition duration-150 ease-in-out"
                   href="{% url 'home' %}"
         
                 >
                   Dashboard
                 </a>
                 <a
-                  class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                  class="{% if current_url == '/transcripts/request' %}text-gray-900 border-gray-300 {% else %} text-gray-400 border-transparent {% endif %} inline-flex items-center px-1 pt-1 border-b-2  text-sm font-medium leading-5  hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
                   href="{%url 'request_transcript'%}"
                 >
                   Transcripts
                 </a>
+                <a 
+                  class="{% if current_url == '/transcripts/status' %}text-gray-900 border-gray-300 {% else %} text-gray-400 border-transparent  {% endif %} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5  hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                  href="{% url 'transcript_status' %}"
+                >
+                  Transcript Status
+                </a>
+                <a 
+                  class="{% if current_url == '/transcripts/history' %}text-gray-900 border-gray-300 {% else %} text-gray-400 border-transparent  {% endif %} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5  hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                  href="{% url 'transcript_request_history' %}"
+                >
+                  Transcript History
+                </a>
               </div>
             </div>
-            <div class="hidden sm:ml-6 sm:flex sm:items-center">
+            <div class="flex">
+            <div class=" sm:ml-6 sm:flex sm:items-center">
               <a href="{% url 'notifications' %}">
                 
               <button
                 aria-label="Notifications"
                 class="p-1 border-2 border-transparent text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition duration-150 ease-in-out"
               >
-              <span class="text-sm flex bg-gray-500 text-white rounded-full justify-center opacity-70 position  right-0">{{notfications_count}}0</span>
+              <span class="text-sm flex bg-gray-500 text-white rounded-full justify-center opacity-70 position  right-0">{{notifications_count}}</span>
                 <svg
                   class="h-6 w-6"
                   fill="none"
@@ -67,7 +80,7 @@
                 
               </button>
               </a>
-              <div class="ml-3 relative w-fit">
+              <div class="hidden sm:ml-6 sm:flex sm:items-center ml-3 relative w-fit">
                 <div>
                   <button
                     aria-haspopup="true"
@@ -91,7 +104,7 @@
                       >
                         <a
                           class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
-                          href="{% url 'profile' %}"
+                          href="{% url 'profile' 4 %}"
                           role="menuitem"
                           >Your Profile</a
                         >
@@ -114,7 +127,7 @@
                 </div>
               </div>
             </div>
-            <div class="-mr-2 flex items-center sm:hidden">
+            <div class="-mr-2 flex sm:hidden items-center">
               <button id="mobile-menu-button" aria-label="Open main menu"
                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
               >
@@ -134,18 +147,44 @@
               </button>
               
             </div>
-            <div id="mobile-menu" class="hidden absolute bg-white shadow-md rounded-md space-x-1 space-y-2 right-0 mt-16">
+            <div id="mobile-menu" class="hidden z-50 absolute bg-white shadow-md rounded-md space-x-1 space-y-2 right-0 mt-16">
                 <a
-                  class="block px-3 py-2 text-base font-medium text-gray-700"
+                  class="block px-3 py-2 text-sm font-medium text-gray-700"
                   href="{% url 'home' %}"
                   >Dashboard</a
                 >
                 <a
-                  class="block px-3 py-2 text-base font-medium text-gray-500"
+                  class="block px-3 py-2 text-sm font-medium text-gray-700"
                   href="{% url 'request_transcript' %}"
                   >Transcripts</a
                 >
+                <a
+                    class="block px-3 py-2 text-sm font-medium text-gray-700"
+                    href="{% url 'transcript_status' %}"
+                    >Transcript Status</a>
+                <a
+                    class="block px-3 py-2 text-sm font-medium text-gray-700"
+                    href="{% url 'transcript_request_history' %}"
+                    >Transcript History</a>
+                 <a
+                          class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                          href="{% url 'profile' 4 %}"
+                          role="menuitem"
+                          >Your Profile</a
+                        >
+                        <a
+                          class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                          href="#"
+                          role="menuitem"
+                          >Settings</a
+                        >
+                        <a
+                          class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                          href="{% url 'account_logout' %}"
+                          role="menuitem"https://agri-connect-ppqi.onrender.com/
+                          >Sign out</a>
                 </div>
+          </div>
           </div>
         </div>
       </nav>

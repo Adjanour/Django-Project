@@ -1,16 +1,15 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,permission_required
 from notifications.models import Notification
 from .forms import RegistrationForm, StudentProfileForm, StudentProfileFormID, CourseLogForm
 from .models import StudentProfile, IdentificationType, Gender, CourseLog, Programme, GraduateType
 from .utils import get_form, get_step_info, get_form_get, handle_course_log_forms
+from  utils import send_notification
 
 @login_required
 def HomePageView(request):
-    notifications = Notification.objects.filter(user=request.user).order_by('-date')
-    notifications_count = notifications.count()
-    return render(request, 'home.html', {'notifications': notifications})
+    return render(request, 'home.html')
 
 
 def register(request):
@@ -27,8 +26,10 @@ def register(request):
 
 
 @login_required
-def verify_student(request, student_pk):
+@permission_required('is_staff')
+def verify_profile(request, student_pk):
     # Verification logic will be implemented here in the future
+    
     pass
 
 
@@ -36,6 +37,8 @@ def verify_student(request, student_pk):
 def profile(request, step=1):
     user = request.user
     profile , created = StudentProfile.objects.get_or_create(user=user)
+    if created :
+        send_notification(request.user,"Profile Created","Congrats, Succesfully Created A profile!",'INFO');
     last_completed_step = profile.step
 
     steps = get_step_info([
@@ -54,6 +57,7 @@ def profile(request, step=1):
             result = handle_course_log_forms(request, profile)
             if result:
                 return result  # Redirect to profile view with updated step
+            
         form = get_form(request.POST, request.FILES, step, profile)
         
         if form.is_valid():
@@ -116,5 +120,6 @@ def submit_profile(request):
     profile = StudentProfile.objects.get(user=user)
     profile.verification_status = "PENDING"
     profile.save()
+    send_notification(request.user,"Profile Submitted","Your profile has been successfully sumnitted and pending processing","INFO")
     
-    return redirect("/")
+    return redirect("/transcripts/request")

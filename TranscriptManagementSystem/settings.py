@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--uzij280mhn2pjkkrko+6m)okmxvzvn031grh*5$4@6b_x1bf*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.43.6", "localhost", "10.1.25.108"]
+ALLOWED_HOSTS = ["localhost","127.0.0.1"]
 
 # Application definition
 
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "transcripts.apps.TranscriptsConfig",
     "payments.apps.PaymentsConfig",
     "notifications.apps.NotificationsConfig",
+    "system.apps.SystemConfig",
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.user_profile_picture',
                 'accounts.context_processors.user_notifications_count',
+                'system.context_processors.current_url',
             ],
         },
     },
@@ -94,28 +96,28 @@ WSGI_APPLICATION = 'TranscriptManagementSystem.wsgi.application'
 # }
 
 # Database setup for SQL Server
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "mssql",
-#         "NAME": "dbTranscriptManagementSystem",
-#         # "USER": "salem",
-#         "USER":"",
-#         # "PASSWORD": "TonePave66$",
-#         "PASSWORD":"",
-#         # "HOST": "africoda-server-2.database.windows.net",
-#         "HOST":"KIRKPC\SALEMSERVER",
-#         "PORT": "",
-#         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server"},
-#     },
-# }
-
-# configure to use sqlite3
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": {
+        "ENGINE": "mssql",
+        "NAME": "dbTranscriptManagementSystem",
+        # "USER": "salem",
+        "USER":"",
+        # "PASSWORD": "TonePave66$",
+        "PASSWORD":"",
+        # "HOST": "africoda-server-2.database.windows.net",
+        "HOST":"KIRKPC\SALEMSERVER",
+        "PORT": "",
+        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server"},
+    },
 }
+
+# # configure to use sqlite3
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # configure to use mysql
 # DATABASES = {

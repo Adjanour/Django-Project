@@ -1,0 +1,90 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Setups{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+<h1 class="text-3xl font-bold mb-6 text-center text-primary">Setups</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-4">
+        <div class="bg-white flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+               <h2 class="text-2xl font-semibold mb-4">Genders</h2>
+            <ul class="space-y-2 mb-4">
+                {% for gender in genders %}
+                    <li class="p-2 bg-gray-100 rounded">{{ gender.name }}</li>
+                {% endfor %}
+            </ul> 
+            </div>
+            
+            <a href="{% url 'add_gender' %}" style="bottom: auto;" class="block bg-green-600  bottom-0 hover:bg-green-700 text-white text-center rounded-md py-2">Add Gender</a>
+        </div>
+        
+        <div class="bg-white flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+               <h2 class="text-2xl font-semibold mb-4">Programs</h2>
+            <ul class="space-y-2 mb-4">
+                {% for program in programs %}
+                    <li class="p-2 bg-gray-100 rounded">{{ program.name }}</li>
+                {% endfor %}
+            </ul> 
+            </div>
+            
+            <a href="{% url 'add_program' %}" class="block bg-green-600 hover:bg-green-700 text-white text-center rounded-md py-2">Add Program</a>
+        </div>
+        
+        <div class="bg-white flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+                <h2 class="text-2xl font-semibold mb-4">Transcript Types</h2>
+            <ul class="space-y-2 mb-4">
+                {% for transcript_type in transcript_types %}
+                    <li class="p-2 bg-gray-100 rounded">{{ transcript_type.name }} - {{ transcript_type.price }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+            
+            <a href="{% url 'add_transcript_type' %}" class="block bg-green-600 hover:bg-green-700 text-white text-center rounded-md py-2">Add Transcript Type</a>
+        </div>
+        
+        <div class="bg-white flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+              <h2 class="text-2xl font-semibold mb-4">Delivery Options</h2>
+            <ul class="space-y-2 mb-4">
+                {% for delivery_option in delivery_options %}
+                    <li class="p-2 bg-gray-100 rounded">{{ delivery_option.name }} - {{ delivery_option.price }}</li>
+                {% endfor %}
+            </ul>  
+            </div>
+            
+            <a href="{% url 'add_delivery_option' %}" class="block bg-green-600 hover:bg-green-700 text-white text-center rounded-md py-2">Add Delivery Option</a>
+        </div>
+
+        <div class="bg-white flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+                <h2 class="text-2xl font-semibold mb-4">Identification Types</h2>
+            <ul class="space-y-2 mb-4">
+                {% for identification_type in identification_types %}
+                    <li class="p-2 bg-gray-100 rounded">{{ identification_type.name }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+            
+            <a href="{% url 'add_identification_type' %}" class="block bg-green-600 hover:bg-green-700 text-white text-center rounded-md py-2">Add Identification Type</a>
+        </div>
+
+        <div class="bg-white flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+                <h2 class="text-2xl font-semibold mb-4">Graduate Types</h2>
+            <ul class="space-y-2 mb-4">
+                {% for graduate_type in graduate_types %}
+                    <li class="p-2 bg-gray-100 rounded">{{ graduate_type.name }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+            
+            <a href="{% url 'add_graduate_type' %}" class="block bg-green-600 hover:bg-green-700 text-white text-center rounded-md py-2">Add Graduate Type</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

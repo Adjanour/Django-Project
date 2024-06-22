@@ -9,6 +9,6 @@ def user_profile_picture(request):
 
 def user_notifications_count(request):
     if request.user.is_authenticated:
-        notfications = Notification.objects.filter(user=request.user)
-        return {'notifications_count': notfications.filter(is_read=False).count()}
+        notifications = Notification.objects.filter(user=request.user)
+        return {'notifications_count': notifications.filter(is_read=False).count()}
     return {}

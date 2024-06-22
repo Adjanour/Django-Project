@@ -1,12 +1,17 @@
 # views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from accounts.models import StudentProfile
+from accounts.models import DeliveryOption, StudentProfile, TranscriptType
 from .forms import TranscriptRequestForm
 from .models import TranscriptRequest
 from django.contrib.auth.decorators import login_required
 
 @login_required
 def transcript_request_view(request):
+    # check if users profile is verified
+    user = request.user
+    profile = StudentProfile.objects.get(user=user)
+    if not profile.is_verified:
+        return redirect('profile')
     if request.method == 'POST':
         form = TranscriptRequestForm(request.POST)
         if form.is_valid():
@@ -21,7 +26,9 @@ def transcript_request_view(request):
             return redirect('initiate_payment', request_id=transcript_request.id)
     else:
         form = TranscriptRequestForm()
-    return render(request, 'transcript_request.html', {'form': form})
+    delivery_options = list(DeliveryOption.objects.all().values('id', 'name', 'price'))
+    transcript_types = list(TranscriptType.objects.all().values('id', 'name', 'price'))
+    return render(request, 'transcript_request.html', {'form': form, 'delivery_options': delivery_options, 'transcript_types': transcript_types})
 
 
 @login_required
@@ -30,7 +37,13 @@ def transcript_request_history_view(request):
     return render(request, 'transcript_request_history.html', {'transcript_requests': transcript_requests})
 
 @login_required
-def edit_transcript_request_view(request, request_id):
+def edit_transcript_request_view(request, request_id=None):
+    # check if users profile is verified
+    user = request.user
+    profile = StudentProfile.objects.get(user=user)
+    if not profile.is_verified:
+        return redirect('profile')
+    
     transcript_request = get_object_or_404(TranscriptRequest, id=request_id)
     if request.method == 'POST':
         form = TranscriptRequestForm(request.POST, instance=transcript_request)
@@ -60,3 +73,15 @@ def transcript_status_view(request):
         user = request.user
         transcript_requests = TranscriptRequest.objects.filter(user=user).order_by('-created_at')
         return render(request, 'transcript_status.html', {'transcript_requests': transcript_requests})
+
+
+@login_required
+def bulk_process_requests(request):
+    if request.method == "POST":
+        request_ids = request.POST.getlist('request_ids')
+        for request_id in request_ids:
+            transcript_request = TranscriptRequest.objects.get(id=request_id)
+            transcript_request.status = 'processing'
+            transcript_request.save()
+        return redirect('admin_dashboard')
+    return render(request, 'admin/bulk_process.html', {'requests': TranscriptRequest.objects.filter(status='pending')})
