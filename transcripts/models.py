@@ -17,7 +17,8 @@ class TranscriptRequest(models.Model):
         ('PROCESSING', 'Processing'),
         ('COMPLETED', 'Completed'),
         ('REJECTED', 'Rejected'),
-        ('CANCELLED', 'Cancelled')
+        ('CANCELLED', 'Cancelled'),
+        ('APPROVED','Approved')
     ], default='PENDING')
     payment_status = models.CharField(max_length=20, choices=[
         ('PENDING', 'Pending'),

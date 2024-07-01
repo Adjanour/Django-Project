@@ -1,0 +1,101 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <div class="mb-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-4">
+        <div class="bg-white  flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+                <h2 class="text-1xl font-semibold mb-4">Total Requests</h2>
+                <ul class="space-y-2 mb-4 justify-center">
+                    <div class="w-full justify-items-center">
+                        {{ total_requests }}
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="bg-white  flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+                <h2 class="text-1xl font-semibold mb-4">Pending Requests</h2>
+                <ul class="space-y-2 mb-4 justify-center">
+                    <div class="w-full justify-items-center">
+                        {{ pending_requests }}
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="bg-white flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+                <h2 class="text-1xl font-semibold mb-4">Approved Requests</h2>
+                <ul class="space-y-2 mb-4 justify-center">
+                    <div class="w-full justify-items-center">
+                        {{ approved_requests }}
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="bg-white  flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+                <h2 class="text-1xl font-semibold mb-4">Rejected Requests</h2>
+                <ul class="space-y-2 mb-4 justify-center">
+                    <div class="w-full justify-items-center">
+                        {{ rejected_requests }}
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="bg-white  flex flex-col justify-between shadow-lg rounded-lg p-6">
+            <div>
+                <h2 class="text-1xl font-semibold mb-4">Total Profiles</h2>
+                <ul class="space-y-2 mb-4 justify-center">
+                    <div class="w-full justify-items-center">
+                        {{ total_profiles }}
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <h2 class="text-2xl font-semibold mb-4">Transcript Requests</h2>
+    <div  id="table-view mt-2 mb-2">
+        <div class="overflow-x-auto">
+       <table class="min-w-full bg-white shadow-md rounded-md">
+         <thead class="bg-gray-100 border-b">
+           <tr>
+             <th class="text-left py-3 px-4 font-semibold text-gray-800">Name</th>
+             <th class="text-left py-3 px-4 font-semibold text-gray-800">Transcript Type</th>
+             <th class="text-left py-3 px-4 font-semibold text-gray-800">Status</th>
+             <th class="text-left py-3 px-4 font-semibold text-gray-800">Date</th>
+             <th class="text-left py-3 px-4 font-semibold text-gray-800">Amount</th>
+             <th class="text-left py-3 px-4 font-semibold text-gray-800">Payment Status</th>
+             <th class="text-left py-3 px-4 font-semibold text-gray-800">Actions</th>
+           </tr>
+         </thead>
+         <tbody>
+           {% for request in requests %}
+             <tr class="border-b">
+               <td class="py-3 px-4 text-gray-700">{{ request.profile.first_name }} {{ request.profile.last_name }}</td>
+               <td class="py-3 px-4 text-gray-700">{{ request.transcript_type }}</td>
+               <td class="py-3 px-4 text-gray-700">{{ request.status }}</td>
+               <td class="py-3 px-4 text-gray-700">{{ request.created_at }}</td>
+               <td class="py-3 px-4 text-gray-700">{{ request.total_cost }}</td>
+               <td class="py-3 px-4 text-gray-700">{{ request.payment_status }}</td>
+               <td class="py-3 px-4 flex space-x-2" style="column-gap: 0.5rem;">
+                <a href="{% url 'process_transcript_request' request.id %}" class="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2">Process</a>
+               </td>
+             </tr>
+           {% endfor %}
+         </tbody>
+       </table>
+     </div>
+     </div>
+
+    
+    <div class=" mt-6 flex justify-center justify-items-center m-auto gap-8 w-full">
+        <a href="{% url 'manage_transcript_types' %}" class="bg-green-600 hover:bg-green-700 text-white rounded-md p-2">Manage Transcript Types</a>
+        <a href="{% url 'manage_genders' %}" class="bg-green-600 hover:bg-green-700 text-white rounded-md p-2">Manage Genders</a>
+        <a href="{% url 'manage_programs' %}" class="bg-green-600 hover:bg-green-700 text-white rounded-md p-2">Manage Programs</a>
+        <a href="{% url 'manage_delivery_options' %}" class="bg-green-600 hover:bg-green-700 text-white rounded-md p-2">Manage Delivery Options</a>
+    </div>
+</div>
+{% endblock %}

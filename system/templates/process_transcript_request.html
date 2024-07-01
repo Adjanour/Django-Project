@@ -1,0 +1,49 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Process Transcript Request{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-6 text-center">Process Transcript Request</h1>
+    
+    <div class="bg-white shadow-md rounded p-6">
+        <h2 class="text-2xl font-semibold mb-4">Request Details</h2>
+        
+        <div class="mb-4">
+            <p class="font-semibold text-gray-800">Name:</p>
+            <p class="text-gray-700">{{ transcript_request.profile.first_name }} {{ transcript_request.profile.last_name }}</p>
+        </div>
+        
+        <div class="mb-4">
+            <p class="font-semibold text-gray-800">Gender:</p>
+            <p class="text-gray-700">{{ transcript_request.profile.gender.name }}</p>
+        </div>
+
+        <div class="mb-4">
+            <p class="font-semibold text-gray-800">Program:</p>
+            <p class="text-gray-700">{{ transcript_request.profile.program.name }}</p>
+        </div>
+
+        <div class="mb-4">
+            <p class="font-semibold text-gray-800">Admission Year:</p>
+            <p class="text-gray-700">{{ transcript_request.profile.admission_year }}</p>
+        </div>
+
+        <div class="mb-4">
+            <p class="font-semibold text-gray-800">Graduation Year:</p>
+            <p class="text-gray-700">{{ transcript_request.profile.graduation_year }}</p>
+        </div>
+
+        <div class="mb-4">
+            <p class="font-semibold text-gray-800">Transcript Type:</p>
+            <p class="text-gray-700">{{ transcript_request.transcript_type.name }} - {{ transcript_request.transcript_type.price }}</p>
+        </div>
+        
+        <div class="mb-4">
+            <p class="font-semibold text-gray-800">Status
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+                
